@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [ { "name": "Common", "source": { "type": "omeka.org", "slug": "Common", "version": "3.4.60" } } ]
+}

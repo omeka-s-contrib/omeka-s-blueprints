@@ -1,0 +1,12 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "vocabularies": [
+        {
+            "prefix": "schema",
+            "namespaceUri": "https://schema.org/",
+            "label": "schema.org",
+            "url": "https://schema.org/version/latest/schemaorg-current-https.rdf",
+            "file": "./schema.rdf"
+        }
+    ]
+}

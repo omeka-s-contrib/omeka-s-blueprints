@@ -1,0 +1,7 @@
+{
+  "phpConstants": {
+    "MY_FLAG": true,
+    "MY_LABEL": "demo",
+    "MY_LIMIT": 50
+  }
+}

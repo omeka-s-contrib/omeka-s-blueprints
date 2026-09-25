@@ -1,0 +1,41 @@
+{
+  "$schema": "../../assets/schema/blueprint-schema.json",
+  "landingPage": "/admin",
+  "siteOptions": {
+    "title": "Omeka Playground Test",
+    "locale": "es",
+    "timezone": "Atlantic/Canary"
+  },
+  "users": [
+    {
+      "username": "admin",
+      "email": "admin@example.com",
+      "password": "password",
+      "role": "global_admin"
+    }
+  ],
+  "modules": [
+    {
+      "name": "Common",
+      "state": "activate",
+      "source": {
+        "type": "omeka.org",
+        "slug": "Common"
+      }
+    },
+    {
+      "name": "EasyAdmin",
+      "state": "activate",
+      "source": {
+        "type": "omeka.org",
+        "slug": "EasyAdmin"
+      }
+    }
+  ],
+  "site": {
+    "title": "Demo Site",
+    "slug": "demo",
+    "theme": "default",
+    "setAsDefault": true
+  }
+}
