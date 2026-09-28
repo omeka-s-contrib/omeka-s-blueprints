@@ -18,10 +18,8 @@ const baseId = main.$id.replace(/[^/]+$/, "");
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 addFormats(ajv);
 ajv.addSchema(main);
-// Partials have no $id; register them under their published URL so the
-// relative "../blueprint-schema.json" refs resolve.
 for (const file of readdirSync(join(schemaDir, "partials"))) {
-  ajv.addSchema(readJson(join(schemaDir, "partials", file)), `${baseId}partials/${file}`);
+  ajv.addSchema(readJson(join(schemaDir, "partials", file)));
 }
 
 const validatorFor = (partial) =>

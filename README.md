@@ -44,3 +44,7 @@ npm test
 ```
 
 Fixtures taken from an implementation are prefixed with its name (`playground-`, `cli-`). To report a compatibility problem, add the blueprint as a fixture in a PR.
+
+## License
+
+[MIT](LICENSE)
