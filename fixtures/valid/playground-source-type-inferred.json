@@ -1,7 +1,0 @@
-{
-    "$schema": "../../assets/schema/blueprint-schema.json",
-    "modules": [
-        { "name": "Common", "source": { "slug": "Common" } },
-        { "name": "Mapping", "source": { "url": "https://example.org/Mapping.zip" } }
-    ]
-}

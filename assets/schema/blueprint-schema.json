@@ -277,7 +277,8 @@
                 "password": { "type": "string", "minLength": 1 },
                 "role": {
                     "type": "string",
-                    "enum": ["global_admin", "site_admin", "editor", "reviewer", "author", "researcher"]
+                    "minLength": 1,
+                    "description": "Omeka S role id. Core roles: global_admin, site_admin, editor, reviewer, author, researcher. Modules can register more (e.g. guest)."
                 },
                 "isActive": { "type": "boolean" },
                 "settings": {
