@@ -1,5 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "Omeka S CLI module list",
+    "$id": "https://raw.githubusercontent.com/omeka-s-contrib/omeka-s-blueprints/main/assets/schema/partials/modules.schema.json",
+    "title": "Omeka S Blueprint module list",
     "$ref": "../blueprint-schema.json#/$defs/moduleList"
 }
