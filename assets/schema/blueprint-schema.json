@@ -82,6 +82,11 @@
             }
         },
 
+        "moduleId": {
+            "type": "string",
+            "description": "Omeka S module identifier (equal to the module's directory name).",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+        },
         "moduleSource": {
             "oneOf": [
                 {
@@ -115,7 +120,7 @@
             "additionalProperties": false,
             "required": ["name"],
             "properties": {
-                "name": { "type": "string", "pattern": "^[^/\\\\]+$" },
+                "name": { "$ref": "#/$defs/moduleId" },
                 "state": {
                     "type": "string",
                     "description": "download = place files only; install = install; activate = install and enable.",
@@ -142,20 +147,25 @@
             "type": "array",
             "items": {
                 "oneOf": [
-                    { "type": "string", "minLength": 1 },
+                    { "$ref": "#/$defs/moduleId" },
                     { "$ref": "#/$defs/module" },
                     { "$ref": "#/$defs/reference" }
                 ]
             }
         },
 
+        "themeId": {
+            "type": "string",
+            "description": "Omeka S theme identifier (equal to the theme's directory name).",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+        },
         "themeSource": { "$ref": "#/$defs/moduleSource" },
         "theme": {
             "type": "object",
             "additionalProperties": false,
             "required": ["name"],
             "properties": {
-                "name": { "type": "string" },
+                "name": { "$ref": "#/$defs/themeId" },
                 "version": { "type": "string" },
                 "source": { "$ref": "#/$defs/themeSource" }
             }
@@ -164,7 +174,7 @@
             "type": "array",
             "items": {
                 "oneOf": [
-                    { "type": "string", "minLength": 1 },
+                    { "$ref": "#/$defs/themeId" },
                     { "$ref": "#/$defs/theme" },
                     { "$ref": "#/$defs/reference" }
                 ]
@@ -361,7 +371,7 @@
                 "title": { "type": "string" },
                 "slug": { "type": "string" },
                 "summary": { "type": "string" },
-                "theme": { "type": "string" },
+                "theme": { "$ref": "#/$defs/themeId" },
                 "isPublic": { "type": "boolean" },
                 "setAsDefault": { "type": "boolean" },
                 "permissions": {
