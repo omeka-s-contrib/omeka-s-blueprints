@@ -1,5 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "Omeka S CLI resource template list",
+    "$id": "https://raw.githubusercontent.com/omeka-s-contrib/omeka-s-blueprints/main/assets/schema/partials/resourceTemplates.schema.json",
+    "title": "Omeka S Blueprint resource template list",
     "$ref": "../blueprint-schema.json#/$defs/resourceTemplateList"
 }
