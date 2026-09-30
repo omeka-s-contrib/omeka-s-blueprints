@@ -1,0 +1,6 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "users": [
+        { "email": "user@example.com", "role": "" }
+    ]
+}

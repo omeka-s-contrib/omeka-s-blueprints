@@ -1,0 +1,25 @@
+{
+  "users": [
+    { "username": "admin", "email": "admin@example.com", "password": "password", "role": "global_admin" },
+    {
+      "username": "editor_a",
+      "email": "editor.a@example.com",
+      "password": "password",
+      "role": "site_editor",
+      "settings": { "limit_to_granted_sites": true, "limit_to_own_assets": true }
+    }
+  ],
+  "sites": [
+    {
+      "title": "Site A",
+      "slug": "site-a",
+      "setAsDefault": true,
+      "permissions": [{ "user": "editor.a@example.com", "role": "admin" }]
+    },
+    { "title": "Site B", "slug": "site-b" }
+  ],
+  "items": [
+    { "title": "Doc A1", "sites": ["site-a"] },
+    { "title": "Doc B1", "sites": ["site-b"] }
+  ]
+}
