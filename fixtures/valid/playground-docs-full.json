@@ -5,18 +5,15 @@
     "author": "ateeducacion",
     "description": "Creates a reusable demo site with sample media."
   },
-  "debug": {
-    "enabled": false
-  },
-  "landingPage": "/admin",
-  "siteOptions": {
+  "install": {
     "title": "Classroom Demo",
     "locale": "es",
-    "timezone": "Atlantic/Canary"
-  },
-  "login": {
-    "email": "admin@example.com",
-    "password": "password"
+    "timezone": "Atlantic/Canary",
+    "admin": {
+      "name": "admin",
+      "email": "admin@example.com",
+      "password": "password"
+    }
   },
   "users": [
     {
@@ -27,13 +24,7 @@
     }
   ],
   "themes": [
-    {
-      "name": "Foundation",
-      "source": {
-        "type": "omeka.org",
-        "slug": "foundation-s"
-      }
-    }
+    "Foundation"
   ],
   "modules": [
     {
@@ -61,10 +52,18 @@
       ]
     }
   ],
-  "site": {
-    "title": "Demo Site",
-    "slug": "demo-site",
-    "theme": "Foundation",
-    "setAsDefault": true
+  "sites": [
+    {
+      "title": "Demo Site",
+      "slug": "demo-site",
+      "theme": "Foundation",
+      "setAsDefault": true
+    }
+  ],
+  "x-playground": {
+    "debug": {
+      "enabled": false
+    },
+    "landingPage": "/admin"
   }
 }

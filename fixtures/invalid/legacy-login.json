@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "login": { "email": "admin@example.com", "password": "password" }
+}

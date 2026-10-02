@@ -9,14 +9,14 @@
         { "$import": "./partials/modules/cli-modules-extra.json" }
     ],
     "themes": [
-        { "name": "default", "source": { "type": "bundled" } }
+        "default"
     ],
     "vocabularies": [
         {
             "prefix": "schema",
             "namespaceUri": "https://schema.org/",
             "label": "schema.org",
-            "url": "https://schema.org/version/latest/schemaorg-current-https.rdf"
+            "source": "https://schema.org/version/latest/schemaorg-current-https.rdf"
         }
     ],
     "resourceTemplates": [

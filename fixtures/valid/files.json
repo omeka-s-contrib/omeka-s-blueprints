@@ -1,0 +1,10 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [ "CleanUrl" ],
+    "files": [
+        { "source": "./config/cleanurl.config.php", "destination": "config/cleanurl.config.php" },
+        { "source": "https://example.com/editor.zip", "destination": "modules/ExeLearning/dist/static", "extract": true },
+        { "source": "./files/..hidden", "destination": "files/..hidden" },
+        { "$import": "./partials/files/files-extra.json" }
+    ]
+}

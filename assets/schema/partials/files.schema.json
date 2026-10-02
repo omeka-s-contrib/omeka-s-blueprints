@@ -1,0 +1,6 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/partials/files.schema.json",
+    "title": "Omeka S Blueprint file list",
+    "$ref": "../blueprint-schema.json#/$defs/fileList"
+}
