@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "install": { "admin": { "name": "admin", "password": "password" } }
+}

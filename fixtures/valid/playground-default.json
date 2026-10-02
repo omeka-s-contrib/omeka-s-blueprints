@@ -9,18 +9,15 @@
     "php": "8.3",
     "omeka": "4.2.1"
   },
-  "debug": {
-    "enabled": false
-  },
-  "landingPage": "/admin",
-  "siteOptions": {
+  "install": {
     "title": "Omeka S Playground",
     "locale": "en_US",
-    "timezone": "UTC"
-  },
-  "login": {
-    "email": "admin@example.com",
-    "password": "password"
+    "timezone": "UTC",
+    "admin": {
+      "name": "admin",
+      "email": "admin@example.com",
+      "password": "password"
+    }
   },
   "users": [
     {
@@ -86,12 +83,20 @@
       ]
     }
   ],
-  "site": {
-    "title": "Omeka S Playground Site",
-    "slug": "playground",
-    "theme": "default",
-    "summary": "Default public site created from the browser blueprint.",
-    "isPublic": true,
-    "setAsDefault": true
+  "sites": [
+    {
+      "title": "Omeka S Playground Site",
+      "slug": "playground",
+      "theme": "default",
+      "summary": "Default public site created from the browser blueprint.",
+      "isPublic": true,
+      "setAsDefault": true
+    }
+  ],
+  "x-playground": {
+    "debug": {
+      "enabled": false
+    },
+    "landingPage": "/admin"
   }
 }

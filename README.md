@@ -18,21 +18,30 @@ The format is independent of any implementation. Each consumer applies the parts
 ```json
 {
   "$schema": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json",
-  "siteOptions": { "title": "Demo", "locale": "en_US", "timezone": "UTC" },
-  "users": [
-    { "email": "admin@example.com", "password": "password", "role": "global_admin" }
-  ],
+  "install": {
+    "title": "Demo",
+    "locale": "en_US",
+    "timezone": "UTC",
+    "admin": { "name": "Admin", "email": "admin@example.com" }
+  },
   "modules": [
-    { "name": "Common", "state": "activate", "source": { "type": "omeka.org", "slug": "Common" } }
+    { "name": "Common", "state": "activate" },
+    { "name": "Mapping", "source": "https://github.com/omeka-s-modules/Mapping/releases/download/v2.1.0/Mapping-2.1.0.zip" }
   ],
-  "site": { "title": "Demo site", "slug": "demo", "theme": "default" }
+  "users": [
+    { "email": "editor@example.com", "role": "editor" }
+  ],
+  "sites": [
+    { "title": "Demo site", "slug": "demo", "theme": "default" }
+  ],
+  "x-playground": { "landingPage": "/admin" }
 }
 ```
 
 ## Repository layout
 
 - `assets/schema/blueprint-schema.json`: the blueprint JSON Schema (2020-12).
-- `assets/schema/partials/`: standalone schemas for lists that can be shared with `$import` (modules, themes, …).
+- `assets/schema/partials/`: standalone schemas for lists that can be shared with `$import` (modules, themes, files, …).
 - `fixtures/valid/`, `fixtures/invalid/`: conformance fixtures. Files under `fixtures/*/partials/<name>/` are validated against `partials/<name>.schema.json`.
 - `tests/`: validates every fixture against the schema.
 

@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "files": [ { "source": "./file", "destination": "/etc/passwd" } ]
+}

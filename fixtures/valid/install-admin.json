@@ -1,0 +1,9 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "install": {
+        "title": "Demo",
+        "locale": "en_US",
+        "timezone": "UTC",
+        "admin": { "name": "Admin", "email": "admin@example.com" }
+    }
+}
