@@ -17,7 +17,7 @@ The format is independent of any implementation. Each consumer applies the parts
 
 ```json
 {
-  "$schema": "https://raw.githubusercontent.com/omeka-s-contrib/omeka-s-blueprints/main/assets/schema/blueprint-schema.json",
+  "$schema": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json",
   "siteOptions": { "title": "Demo", "locale": "en_US", "timezone": "UTC" },
   "users": [
     { "email": "admin@example.com", "password": "password", "role": "global_admin" }
@@ -35,6 +35,17 @@ The format is independent of any implementation. Each consumer applies the parts
 - `assets/schema/partials/`: standalone schemas for lists that can be shared with `$import` (modules, themes, …).
 - `fixtures/valid/`, `fixtures/invalid/`: conformance fixtures. Files under `fixtures/*/partials/<name>/` are validated against `partials/<name>.schema.json`.
 - `tests/`: validates every fixture against the schema.
+
+## Versioning
+
+The schema is published on GitHub Pages for every tag:
+
+- `https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json`: the latest `v0.x.y` release. Use this one in `$schema` and in tools: it receives fixes and new optional fields, never breaking changes.
+- `https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0.1.0/blueprint-schema.json`: a fixed release, for exact pinning.
+
+Partials live next to it, under `partials/`. Do not point to `main`, it can carry unreleased breaking changes.
+
+Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions: `v0` is already treated as a stable major, so a breaking change (a field removed, renamed or made stricter) bumps it to `v1`. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the site.
 
 ## Development
 

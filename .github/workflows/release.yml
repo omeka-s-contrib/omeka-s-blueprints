@@ -1,0 +1,35 @@
+name: Release
+
+# Pushing a vX.Y.Z tag moves the floating vX tag to it (when it is the
+# highest release of that major) and republishes the schema on Pages.
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Move the major tag
+        run: |
+          major="${GITHUB_REF_NAME%%.*}"
+          latest=$(git tag -l "$major.*" --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 1)
+          if [ "$latest" != "$GITHUB_REF_NAME" ]; then
+            echo "$GITHUB_REF_NAME is not the latest $major release ($latest), $major stays"
+            exit 0
+          fi
+          git tag -f "$major"
+          git push -f origin "refs/tags/$major"
+      # Tags pushed with GITHUB_TOKEN do not trigger workflows, and the
+      # github-pages environment only deploys from main.
+      - name: Publish the schema
+        run: gh workflow run pages.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}
