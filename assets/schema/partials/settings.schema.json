@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/omeka-s-contrib/omeka-s-blueprints/main/assets/schema/partials/settings.schema.json",
+    "$id": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/partials/settings.schema.json",
     "title": "Omeka S Blueprint settings",
     "$ref": "../blueprint-schema.json#/$defs/settings"
 }

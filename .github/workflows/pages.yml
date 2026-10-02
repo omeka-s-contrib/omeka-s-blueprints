@@ -1,0 +1,38 @@
+name: Pages
+
+# Publishes assets/schema/ of every tag under schema/<tag>/, so both the
+# floating tags (v0) and the releases (v0.1.0) have a stable URL.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Build the site
+        run: |
+          for tag in $(git tag -l 'v*'); do
+            dir="_site/schema/$tag"
+            mkdir -p "$dir"
+            git archive "$tag" assets/schema | tar -x --strip-components=2 -C "$dir"
+            # The sources use the floating channel as $id; each copy gets its own.
+            find "$dir" -name '*.json' -exec sed -i -E "s#(/omeka-s-blueprints/schema/)v[0-9]+/#\1$tag/#" {} +
+          done
+      - uses: actions/upload-pages-artifact@v4
+      - id: deployment
+        uses: actions/deploy-pages@v4
