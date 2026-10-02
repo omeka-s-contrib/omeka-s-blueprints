@@ -1,0 +1,16 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [
+        "Common",
+        { "name": "EasyAdmin", "version": "3.4.30" },
+        { "name": "Mapping", "source": "https://github.com/omeka-s-modules/Mapping/releases/download/v2.1.0/Mapping-2.1.0.zip" },
+        { "name": "CleanUrl", "source": "https://gitlab.com/Daniel-KM/Omeka-S-module-CleanUrl.git", "version": "3.17.6" },
+        { "name": "AdvancedSearch", "source": "git@gitlab.com:Daniel-KM/Omeka-S-module-AdvancedSearch.git" },
+        { "name": "Log", "source": "gh:Daniel-KM/Omeka-S-module-Log", "state": "install" }
+    ],
+    "themes": [
+        "default",
+        { "name": "foundation", "version": "1.6.0" },
+        { "name": "freedom", "source": "gh:omeka-s-themes/freedom" }
+    ]
+}

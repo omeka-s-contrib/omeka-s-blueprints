@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "siteOptions": { "title": "Demo", "locale": "en_US", "timezone": "UTC" }
+}

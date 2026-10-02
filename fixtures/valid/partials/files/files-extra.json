@@ -1,0 +1,3 @@
+[
+    { "source": "../ark/noid.db", "destination": "files/arkandnoid/noid.db" }
+]

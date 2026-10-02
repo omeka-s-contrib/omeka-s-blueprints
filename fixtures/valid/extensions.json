@@ -1,0 +1,11 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "install": { "admin": { "email": "admin@example.com", "password": "password" } },
+    "x-playground": {
+        "landingPage": "/admin",
+        "login": { "email": "admin@example.com", "password": "password" },
+        "phpConstants": { "MY_FLAG": true },
+        "debug": { "enabled": true }
+    },
+    "x-omeka-s-cli": { "anything": [ "the CLI defines it" ] }
+}

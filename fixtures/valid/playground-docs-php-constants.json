@@ -1,7 +1,9 @@
 {
-  "phpConstants": {
-    "MY_FLAG": true,
-    "MY_LABEL": "demo",
-    "MY_LIMIT": 50
+  "x-playground": {
+    "phpConstants": {
+      "MY_FLAG": true,
+      "MY_LABEL": "demo",
+      "MY_LIMIT": 50
+    }
   }
 }

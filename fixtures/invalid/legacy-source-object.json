@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [ { "name": "Mapping", "source": { "type": "url", "url": "https://github.com/omeka-s-modules/Mapping/releases/download/v2.1.0/Mapping-2.1.0.zip" } } ]
+}
