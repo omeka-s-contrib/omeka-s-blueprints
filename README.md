@@ -4,6 +4,8 @@ A shared, declarative JSON format to describe an Omeka S environment: modules, t
 
 The format is independent of any implementation. Each consumer applies the parts it supports and documents them in its own support matrix.
 
+Documentation, examples and the schema: <https://omeka-s-contrib.github.io/omeka-s-blueprints/>
+
 > [!NOTE]
 > Work in progress. See the [roadmap to spec v0.1](https://github.com/omeka-s-contrib/omeka-s-blueprints/issues/1).
 
@@ -43,7 +45,8 @@ The format is independent of any implementation. Each consumer applies the parts
 - `assets/schema/blueprint-schema.json`: the blueprint JSON Schema (2020-12).
 - `assets/schema/partials/`: standalone schemas for lists that can be shared with `$import` (modules, themes, files, …).
 - `fixtures/valid/`, `fixtures/invalid/`: conformance fixtures. Files under `fixtures/*/partials/<name>/` are validated against `partials/<name>.schema.json`.
-- `tests/`: validates every fixture against the schema.
+- `docs/`: the documentation site ([Zensical](https://zensical.org), configured in `mkdocs.yml`). `docs/examples/` holds the examples shown on it.
+- `tests/`: validates every fixture and example against the schema.
 
 ## Versioning
 
@@ -54,13 +57,20 @@ The schema is published on GitHub Pages for every tag:
 
 Partials live next to it, under `partials/`. Do not point to `main`, it can carry unreleased breaking changes.
 
-Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions: `v0` is already treated as a stable major, so a breaking change (a field removed, renamed or made stricter) bumps it to `v1`. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the site.
+Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions: `v0` is already treated as a stable major, so a breaking change (a field removed, renamed or made stricter) bumps it to `v1`. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the site. Pushes to `main` update the documentation only; the files under `schema/` always come from the tags.
 
 ## Development
 
 ```sh
 npm install
 npm test
+```
+
+To preview the documentation:
+
+```sh
+pip install zensical
+zensical serve
 ```
 
 Fixtures taken from an implementation are prefixed with its name (`playground-`, `cli-`). To report a compatibility problem, add the blueprint as a fixture in a PR.

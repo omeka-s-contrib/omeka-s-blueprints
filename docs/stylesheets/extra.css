@@ -1,0 +1,8 @@
+/* Omeka S red ($red in omeka-s/application/asset/sass/_base.scss) */
+:root > * {
+  --md-primary-fg-color: #a91919;
+  --md-primary-fg-color--light: #e11717;
+  --md-primary-fg-color--dark: #7f1313;
+  --md-accent-fg-color: #e11717;
+  --md-accent-fg-color--transparent: #a919191a;
+}

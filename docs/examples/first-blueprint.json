@@ -1,0 +1,19 @@
+{
+  "$schema": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json",
+  "install": {
+    "title": "Demo",
+    "locale": "en_US",
+    "timezone": "UTC",
+    "admin": { "name": "Admin", "email": "admin@example.com" }
+  },
+  "modules": [
+    { "name": "Common", "state": "activate" },
+    { "name": "Mapping", "source": "https://github.com/omeka-s-modules/Mapping/releases/download/v2.1.0/Mapping-2.1.0.zip" }
+  ],
+  "users": [
+    { "email": "editor@example.com", "role": "editor" }
+  ],
+  "sites": [
+    { "title": "Demo site", "slug": "demo", "theme": "default" }
+  ]
+}

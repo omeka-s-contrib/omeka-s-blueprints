@@ -1,0 +1,76 @@
+# Built with Zensical (https://zensical.org); kept MkDocs-compatible, so
+# `mkdocs build` with Material for MkDocs works as a fallback.
+site_name: Omeka S Blueprints
+site_description: A shared JSON format to describe an Omeka S environment.
+site_url: https://omeka-s-contrib.github.io/omeka-s-blueprints/
+repo_url: https://github.com/omeka-s-contrib/omeka-s-blueprints
+repo_name: omeka-s-blueprints
+edit_uri: edit/main/docs/
+copyright: MIT License · <a href="https://omeka-s-contrib.github.io/omeka-s-blueprints/llms.txt">llms.txt</a>
+
+nav:
+  - Overview: index.md
+  - Reference: reference.md
+  - Examples: examples.md
+  - Schema: schema.md
+
+theme:
+  name: material
+  font:
+    text: IBM Plex Sans
+    code: IBM Plex Mono
+  features:
+    - content.action.copy
+    - content.action.edit
+    - content.code.copy
+    - navigation.footer
+    - navigation.instant
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: lucide/moon
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: lucide/sun
+        name: Switch to light mode
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: [docs]
+      check_paths: true
+
+plugins:
+  - search
+  - llmstxt:
+      markdown_description: >-
+        A blueprint is a JSON file that describes an Omeka S environment.
+        Tools such as Omeka S Playground and Omeka-S-Cli apply it. The JSON
+        Schema is at https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json
+      full_output: llms-full.txt
+      sections:
+        Specification:
+          - index.md: What a blueprint is and which tools consume it
+          - reference.md: Every top-level key and its fields
+          - schema.md: Schema URLs, partials and versioning
+        Examples:
+          - examples.md: Copy-pasteable blueprints

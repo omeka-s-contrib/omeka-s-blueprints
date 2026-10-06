@@ -1,0 +1,23 @@
+{
+  "$schema": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json",
+  "users": [
+    {
+      "email": "editor.a@example.com",
+      "role": "editor",
+      "settings": { "limit_to_granted_sites": true }
+    }
+  ],
+  "sites": [
+    {
+      "title": "Site A",
+      "slug": "site-a",
+      "setAsDefault": true,
+      "permissions": [{ "user": "editor.a@example.com", "role": "admin" }]
+    },
+    { "title": "Site B", "slug": "site-b", "isPublic": false }
+  ],
+  "items": [
+    { "title": "Document A1", "sites": ["site-a"] },
+    { "title": "Document B1", "sites": ["site-b"] }
+  ]
+}
