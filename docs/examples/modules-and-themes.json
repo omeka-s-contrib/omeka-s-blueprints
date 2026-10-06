@@ -1,0 +1,16 @@
+{
+  "$schema": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json",
+  "modules": [
+    "Common",
+    { "name": "EasyAdmin", "version": "3.4.30" },
+    { "name": "Mapping", "source": "https://github.com/omeka-s-modules/Mapping/releases/download/v2.1.0/Mapping-2.1.0.zip" },
+    { "name": "Log", "source": "gh:Daniel-KM/Omeka-S-module-Log", "state": "install" }
+  ],
+  "themes": [
+    "default",
+    { "name": "freedom", "source": "gh:omeka-s-themes/freedom" }
+  ],
+  "sites": [
+    { "title": "Freedom site", "slug": "freedom", "theme": "freedom", "setAsDefault": true }
+  ]
+}

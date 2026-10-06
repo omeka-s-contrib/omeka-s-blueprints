@@ -2,6 +2,7 @@
 //   fixtures/valid/*.json                  must pass blueprint-schema.json
 //   fixtures/valid/partials/<name>/*.json  must pass partials/<name>.schema.json
 //   fixtures/invalid/...                   same layout, must fail
+//   docs/examples/*.json                   must pass blueprint-schema.json
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
@@ -51,6 +52,13 @@ for (const { path, file, partial } of fixtures("valid")) {
   test(`valid: ${path}`, () => {
     const validate = validatorFor(partial);
     assert.ok(validate(readJson(file)), ajv.errorsText(validate.errors, { separator: "\n" }));
+  });
+}
+
+for (const file of readdirSync(join(root, "docs/examples"))) {
+  test(`example: docs/examples/${file}`, () => {
+    const validate = validatorFor();
+    assert.ok(validate(readJson(join(root, "docs/examples", file))), ajv.errorsText(validate.errors, { separator: "\n" }));
   });
 }
 
