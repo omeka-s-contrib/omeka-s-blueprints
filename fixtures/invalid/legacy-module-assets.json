@@ -1,0 +1,9 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [
+        {
+            "name": "ExeLearning",
+            "assets": [ { "url": "https://example.com/editor.zip", "destination": "dist/static" } ]
+        }
+    ]
+}
