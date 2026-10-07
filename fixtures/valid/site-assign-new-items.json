@@ -1,0 +1,15 @@
+{
+    "$schema": "https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/blueprint-schema.json",
+    "users": [
+        { "email": "editor.a@example.org", "role": "editor" }
+    ],
+    "sites": [
+        {
+            "title": "Team A",
+            "slug": "team-a",
+            "assignNewItems": false,
+            "permissions": [{ "user": "editor.a@example.org", "role": "editor" }]
+        },
+        { "title": "Catalogue", "slug": "catalogue", "assignNewItems": true }
+    ]
+}
