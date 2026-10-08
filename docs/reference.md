@@ -138,6 +138,7 @@ Sample content. An item set has a `title` (required) and a `description`.
 | `theme` | string | Theme name, as in `themes` |
 | `isPublic` | boolean | |
 | `setAsDefault` | boolean | Make it the default site |
+| `assignNewItems` | boolean, default `true` | Add items created later without an explicit site (CSV imports, API calls) to this site, as the Omeka S admin form does. Set it to `false` to keep a site's items under explicit control. |
 | `permissions` | list | Each one has a `user` (email of a blueprint user, required) and a `role`: `viewer`, `editor` or `admin` |
 
 ## `meta` and `preferredVersions`

@@ -367,6 +367,11 @@
                 "theme": { "$ref": "#/$defs/themeId" },
                 "isPublic": { "type": "boolean" },
                 "setAsDefault": { "type": "boolean" },
+                "assignNewItems": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Add items created later without an explicit site to this site, as the Omeka S admin form does by default. Consumers set it when they create the site."
+                },
                 "permissions": {
                     "type": "array",
                     "description": "Per-site user permissions, by user email.",
