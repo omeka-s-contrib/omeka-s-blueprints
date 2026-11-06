@@ -304,8 +304,40 @@
             "items": {
                 "oneOf": [
                     { "$ref": "#/$defs/itemSet" },
+                    { "$ref": "#/$defs/itemSetSource" },
                     { "$ref": "#/$defs/reference" }
                 ]
+            }
+        },
+
+        "contentSource": {
+            "type": "string",
+            "minLength": 1,
+            "format": "uri-reference",
+            "description": "Path or URL to a portable JSON-LD file: one resource, with an inline @context, that names the records it refers to with o-ref terms (https://omeka-s-contrib.github.io/omeka-s-ref/ns) instead of instance ids. A relative path resolves against the file that declares the entry."
+        },
+        "itemSetSource": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source"],
+            "properties": {
+                "source": { "$ref": "#/$defs/contentSource" },
+                "title": { "type": "string", "description": "The title in the file. Only used in messages, and so that items can name this item set by title." }
+            }
+        },
+        "itemSource": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source"],
+            "properties": {
+                "source": { "$ref": "#/$defs/contentSource" },
+                "title": { "type": "string", "description": "The title in the file. Only used in messages." },
+                "sites": {
+                    "type": "array",
+                    "description": "Slugs (or titles) of the sites this item is assigned to. Replaces the file's o:site.",
+                    "items": { "type": "string" }
+                },
+                "media": { "type": "array", "items": { "$ref": "#/$defs/media" } }
             }
         },
 
@@ -342,6 +374,7 @@
             "items": {
                 "oneOf": [
                     { "$ref": "#/$defs/item" },
+                    { "$ref": "#/$defs/itemSource" },
                     { "$ref": "#/$defs/reference" }
                 ]
             }

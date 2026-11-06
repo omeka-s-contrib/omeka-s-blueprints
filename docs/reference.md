@@ -129,6 +129,39 @@ Sample content. An item set has a `title` (required) and a `description`.
 | `sites` | list of strings | Slugs or titles of the sites the item belongs to. Defaults to the default site. |
 | `media` | list | Each one has a `url` (required), `title` and `altText`. `type` is `url`, the only type so far. |
 
+### Portable JSON-LD sources
+
+An entry of `itemSets` or `items` can instead point to a portable JSON-LD file with `source`. The file is Omeka's JSON-LD for one resource, with an inline `@context`, and it names the records it refers to instead of using instance ids, so it can be imported into any installation. [Omeka-S-Cli](https://github.com/GhentCDH/Omeka-S-Cli)'s `item:export` and `item-set:export` write these files.
+
+```json
+"itemSets": [{ "source": "./content/item-sets/photographs.jsonld", "title": "Photographs" }],
+"items": [
+  {
+    "source": "./content/items/harbour.jsonld",
+    "sites": ["collections"],
+    "media": [{ "url": "./content/media/harbour.png" }]
+  }
+]
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `source` | string, required | Path or URL to the JSON-LD file. A relative path resolves against the file that declares the entry. |
+| `title` | string | The title in the file. Only used in messages, and so that a simple item can name a source item set in `itemSets`. |
+| `sites` | list of strings | Items only. Slugs or titles that replace the file's `o:site`. |
+| `media` | list | Items only. As in a simple item. |
+
+Every other property, item sets included, belongs in the file. References use the [`o-ref` vocabulary](https://omeka-s-contrib.github.io/omeka-s-ref/ns) (`https://omeka-s-contrib.github.io/omeka-s-ref/ns#`), recognized by its namespace under any prefix:
+
+- `o-ref:id` is the record's own identity, `{"<term>": "<value>"}`. Without it, the title identifies the record. A record that already exists is left as it is, so applying a blueprint again creates nothing new.
+- `o-ref:ref` links to another record wherever Omeka S writes `{"o:id": …}`: `o:item_set`, or a value of type `resource:*`. It names a record by one property value. A reference that matches no record, or more than one, is skipped with a warning.
+- Classes are named by `{"o:term"}`, resource templates by `{"o:label"}` and sites by `{"o:slug"}`.
+- Properties are matched by namespace URI, so the file's prefixes do not have to match the installation's.
+
+Item sets are created before items, each list in order, so a reference should point to a record declared earlier or already in the installation. An item keeps the file's `o:site` unless the entry gives `sites`; with no site, or none that matches, it goes to the default site.
+
+A missing vocabulary, an unknown property, class, template or data type is a problem with the resource. A consumer either stops or skips that resource, and in both cases reports it; its support matrix says which.
+
 ## `sites`
 
 | Field | Type | Description |
