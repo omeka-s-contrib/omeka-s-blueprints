@@ -43,7 +43,7 @@ Every key is optional. Unknown keys are rejected, except extensions that start w
 | [`resourceTemplates`](reference.md#resourcetemplates) | Resource templates from JSON exports |
 | [`settings`](reference.md#settings) | Global settings |
 | [`users`](reference.md#users) | Accounts and their roles |
-| [`itemSets`, `items`](reference.md#itemsets-and-items) | Sample content, with media by URL |
+| [`itemSets`, `items`](reference.md#itemsets-and-items) | Sample content, with media by URL, written in the blueprint or imported from portable JSON-LD files |
 | [`sites`](reference.md#sites) | Sites, their theme and per-user permissions |
 | [`meta`, `preferredVersions`](reference.md#meta-and-preferredversions) | Informational: title, author, PHP and Omeka S versions |
 | [`x-…`](reference.md#extensions) | Options for one consumer; the others ignore them |
