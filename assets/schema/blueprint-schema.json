@@ -296,7 +296,8 @@
             "required": ["title"],
             "properties": {
                 "title": { "type": "string" },
-                "description": { "type": "string" }
+                "description": { "type": "string" },
+                "onError": { "$ref": "#/$defs/onError" }
             }
         },
         "itemSetList": {
@@ -310,6 +311,12 @@
             }
         },
 
+        "onError": {
+            "type": "string",
+            "enum": ["fail", "skip"],
+            "default": "fail",
+            "description": "What a consumer does when this entry cannot be applied: fail stops the deploy, skip leaves the entry out and reports a warning."
+        },
         "contentSource": {
             "type": "string",
             "minLength": 1,
@@ -322,7 +329,8 @@
             "required": ["source"],
             "properties": {
                 "source": { "$ref": "#/$defs/contentSource" },
-                "title": { "type": "string", "description": "The title in the file. Only used in messages, and so that items can name this item set by title." }
+                "title": { "type": "string", "description": "The title in the file. Only used in messages, and so that items can name this item set by title." },
+                "onError": { "$ref": "#/$defs/onError" }
             }
         },
         "itemSource": {
@@ -337,7 +345,8 @@
                     "description": "Slugs (or titles) of the sites this item is assigned to. Replaces the file's o:site.",
                     "items": { "type": "string" }
                 },
-                "media": { "type": "array", "items": { "$ref": "#/$defs/media" } }
+                "media": { "type": "array", "items": { "$ref": "#/$defs/media" } },
+                "onError": { "$ref": "#/$defs/onError" }
             }
         },
 
@@ -366,7 +375,8 @@
                     "description": "Slugs (or titles) of the sites this item is assigned to. Defaults to the default site.",
                     "items": { "type": "string" }
                 },
-                "media": { "type": "array", "items": { "$ref": "#/$defs/media" } }
+                "media": { "type": "array", "items": { "$ref": "#/$defs/media" } },
+                "onError": { "$ref": "#/$defs/onError" }
             }
         },
         "itemList": {

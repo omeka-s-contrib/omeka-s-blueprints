@@ -1,0 +1,1 @@
+{ "itemSets": [{ "$import": "./content/item-sets.json", "onError": "skip" }] }

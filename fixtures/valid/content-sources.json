@@ -3,7 +3,7 @@
   "sites": [{ "title": "Collections", "slug": "collections", "setAsDefault": true }],
   "itemSets": [
     { "source": "./content/item-sets/photographs.jsonld", "title": "Photographs" },
-    { "title": "Postcards" }
+    { "title": "Postcards", "onError": "skip" }
   ],
   "items": [
     {
@@ -11,7 +11,7 @@
       "sites": ["collections"],
       "media": [{ "url": "./content/media/harbour.png", "title": "Photograph" }]
     },
-    { "source": "https://example.org/content/items/market.jsonld" },
-    { "title": "Street", "itemSets": ["Photographs"] }
+    { "source": "https://example.org/content/items/market.jsonld", "onError": "skip" },
+    { "title": "Street", "itemSets": ["Photographs"], "onError": "fail" }
   ]
 }

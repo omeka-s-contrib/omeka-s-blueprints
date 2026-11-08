@@ -154,13 +154,34 @@ An entry of `itemSets` or `items` can instead point to a portable JSON-LD file w
 Every other property, item sets included, belongs in the file. References use the [`o-ref` vocabulary](https://omeka-s-contrib.github.io/omeka-s-ref/ns) (`https://omeka-s-contrib.github.io/omeka-s-ref/ns#`), recognized by its namespace under any prefix:
 
 - `o-ref:id` is the record's own identity, `{"<term>": "<value>"}`. Without it, the title identifies the record. A record that already exists is left as it is, so applying a blueprint again creates nothing new.
-- `o-ref:ref` links to another record wherever Omeka S writes `{"o:id": …}`: `o:item_set`, or a value of type `resource:*`. It names a record by one property value. A reference that matches no record, or more than one, is skipped with a warning.
+- `o-ref:ref` links to another record wherever Omeka S writes `{"o:id": …}`: `o:item_set`, or a value of type `resource:*`. It names a record by one property value.
 - Classes are named by `{"o:term"}`, resource templates by `{"o:label"}` and sites by `{"o:slug"}`.
 - Properties are matched by namespace URI, so the file's prefixes do not have to match the installation's.
 
 Item sets are created before items, each list in order, so a reference should point to a record declared earlier or already in the installation. An item keeps the file's `o:site` unless the entry gives `sites`; with no site, or none that matches, it goes to the default site.
 
-A missing vocabulary, an unknown property, class, template or data type is a problem with the resource. A consumer either stops or skips that resource, and in both cases reports it; its support matrix says which.
+### Errors
+
+Every entry of `itemSets` and `items`, simple or with a `source`, takes `onError`:
+
+| Value | Meaning |
+|---|---|
+| `fail` (default) | If the entry cannot be applied, the consumer stops. |
+| `skip` | The consumer leaves the entry out and reports it with a warning. |
+
+```json
+"items": [
+  { "source": "./content/items/harbour.jsonld", "onError": "skip" }
+]
+```
+
+These are errors for an entry:
+
+- a missing vocabulary, or an unknown property, class, template or data type;
+- a media file that cannot be fetched or that Omeka S rejects;
+- a dependency that cannot be resolved: an `o-ref:ref` that matches no record or more than one, or an item set in a simple item's `itemSets` that does not exist. A skipped entry counts as missing for the entries that depend on it, and their own `onError` decides what happens.
+
+A record that already exists is not an error: the identity rules above leave it as it is. An `$import` entry has no `onError`; the entries in the imported file carry their own. Demo blueprints mark their sample content `"skip"`, so that a broken link does not stop the deploy.
 
 ## `sites`
 
