@@ -75,6 +75,64 @@
             }
         },
 
+        "datasource.relativePath": {
+            "type": "string",
+            "description": "Path relative to the declaring document; must stay inside the permitted root. './' is recommended.",
+            "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?![/\\\\])(?!git@).+$"
+        },
+        "datasource.url": {
+            "type": "string",
+            "pattern": "^(?!https://github\\.com/[^/#]+/[^/#]+/?(#.*)?$)https?://(?!.*\\.git(#.*)?$).+$"
+        },
+        "datasource.gitRepoUrl": {
+            "type": "string",
+            "pattern": "^(https?://.+\\.git|https://github\\.com/[^/#]+/[^/#]+/?|git@[^:]+:.+)(#.+)?$"
+        },
+        "datasource.gitRepoShorthand": {
+            "type": "string",
+            "pattern": "^gh:[^/@:#]+/[^/@:#]+(#.+)?$"
+        },
+        "datasource.gitRepoFile": {
+            "type": "string",
+            "pattern": "^(gh:[^/@:]+/[^/@:]+|gl:[^@:]+)(@[^:]+)?:.+$"
+        },
+
+        "datasource.file": {
+            "x-blueprint-reference": "resource",
+            "description": "A single file: relative path, URL or file in a repository.",
+            "anyOf": [
+                { "$ref": "#/$defs/datasource.relativePath" },
+                { "$ref": "#/$defs/datasource.url" },
+                { "$ref": "#/$defs/datasource.gitRepoFile" }
+            ]
+        },
+        "datasource.zip": {
+            "$ref": "#/$defs/datasource.file",
+            "description": "A ZIP archive. A single top-level folder in it is skipped."
+        },
+        "datasource.gitRepo": {
+            "description": "A git repository. The ref comes from #ref in the source, else from the entry's version.",
+            "anyOf": [
+                { "$ref": "#/$defs/datasource.gitRepoUrl" },
+                { "$ref": "#/$defs/datasource.gitRepoShorthand" }
+            ]
+        },
+
+        "omeka.addonSource": {
+            "x-blueprint-reference": "addon",
+            "description": "Module or theme: ZIP or git repository. A ZIP or a #ref wins over version. Without it, the installed add-on is used, else a catalog lookup by name.",
+            "anyOf": [
+                { "$ref": "#/$defs/datasource.zip" },
+                { "$ref": "#/$defs/datasource.gitRepo" }
+            ]
+        },
+
+        "instancePath": {
+            "type": "string",
+            "description": "Path relative to the Omeka S installation root. Absolute paths and '..' segments are not allowed.",
+            "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$)).+$"
+        },
+
         "moduleId": {
             "type": "string",
             "description": "Omeka S module identifier (equal to the module's directory name).",
