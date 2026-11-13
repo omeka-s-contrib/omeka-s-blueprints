@@ -71,7 +71,7 @@
             "additionalProperties": false,
             "required": ["$import"],
             "properties": {
-                "$import": { "type": "string", "minLength": 1 }
+                "$import": { "$ref": "#/$defs/datasource.file" }
             }
         },
 
@@ -138,11 +138,6 @@
             "description": "Omeka S module identifier (equal to the module's directory name).",
             "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
         },
-        "addonSource": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Where to get the add-on: a ZIP release URL (https://…/Module-1.2.3.zip), a git repository URL, or a scheme-prefixed reference (gh:owner/repo). Consumers reject forms they do not support. Without a source, the add-on already present in the installation is used; otherwise 'name' is resolved through the omeka.org add-on API."
-        },
         "addonVersion": {
             "type": "string",
             "description": "Release to use when resolving through omeka.org, or tag/branch for a git source. A source that pins a release (a ZIP URL) wins; consumers may warn when they differ."
@@ -159,7 +154,7 @@
                     "enum": ["download", "install", "activate"]
                 },
                 "version": { "$ref": "#/$defs/addonVersion" },
-                "source": { "$ref": "#/$defs/addonSource" }
+                "source": { "$ref": "#/$defs/omeka.addonSource" }
             }
         },
         "moduleList": {
@@ -185,7 +180,7 @@
             "properties": {
                 "name": { "$ref": "#/$defs/themeId" },
                 "version": { "$ref": "#/$defs/addonVersion" },
-                "source": { "$ref": "#/$defs/addonSource" }
+                "source": { "$ref": "#/$defs/omeka.addonSource" }
             }
         },
         "themeList": {
@@ -206,14 +201,12 @@
             "required": ["source", "destination"],
             "properties": {
                 "source": {
-                    "type": "string",
-                    "format": "uri-reference",
+                    "$ref": "#/$defs/datasource.file",
                     "description": "Path or URL of the file. Relative paths resolve against the blueprint file."
                 },
                 "destination": {
-                    "type": "string",
-                    "description": "Path relative to the Omeka S root. Absolute paths and '..' segments are not allowed. With extract, the directory to extract into.",
-                    "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$)).+$"
+                    "$ref": "#/$defs/instancePath",
+                    "description": "Path relative to the Omeka S root. Absolute paths and '..' segments are not allowed. With extract, the directory to extract into."
                 },
                 "extract": {
                     "type": "boolean",
@@ -239,8 +232,7 @@
             "required": ["source", "namespaceUri", "prefix", "label"],
             "properties": {
                 "source": {
-                    "type": "string",
-                    "format": "uri-reference",
+                    "$ref": "#/$defs/datasource.file",
                     "description": "Path or URL of the RDF file. Relative paths resolve against the blueprint file."
                 },
                 "namespaceUri": { "type": "string" },
@@ -269,7 +261,7 @@
             "required": ["source"],
             "properties": {
                 "source": {
-                    "type": "string",
+                    "$ref": "#/$defs/datasource.file",
                     "description": "Path or URL to a resource-template JSON export."
                 },
                 "label": { "type": "string" },
@@ -375,18 +367,15 @@
             "default": "fail",
             "description": "What a consumer does when this entry cannot be applied: fail stops the deploy, skip leaves the entry out and reports a warning."
         },
-        "contentSource": {
-            "type": "string",
-            "minLength": 1,
-            "format": "uri-reference",
-            "description": "Path or URL to a portable JSON-LD file: one resource, with an inline @context, that names the records it refers to with o-ref terms (https://omeka-s-contrib.github.io/omeka-s-ref/ns) instead of instance ids. A relative path resolves against the file that declares the entry."
-        },
         "itemSetSource": {
             "type": "object",
             "additionalProperties": false,
             "required": ["source"],
             "properties": {
-                "source": { "$ref": "#/$defs/contentSource" },
+                "source": {
+                    "$ref": "#/$defs/datasource.file",
+                    "description": "Path or URL to a portable JSON-LD file: one resource, with an inline @context, that names the records it refers to with o-ref terms (https://omeka-s-contrib.github.io/omeka-s-ref/ns) instead of instance ids. A relative path resolves against the file that declares the entry."
+                },
                 "title": { "type": "string", "description": "The title in the file. Only used in messages, and so that items can name this item set by title." },
                 "onError": { "$ref": "#/$defs/onError" }
             }
@@ -396,7 +385,10 @@
             "additionalProperties": false,
             "required": ["source"],
             "properties": {
-                "source": { "$ref": "#/$defs/contentSource" },
+                "source": {
+                    "$ref": "#/$defs/datasource.file",
+                    "description": "Path or URL to a portable JSON-LD file: one resource, with an inline @context, that names the records it refers to with o-ref terms (https://omeka-s-contrib.github.io/omeka-s-ref/ns) instead of instance ids. A relative path resolves against the file that declares the entry."
+                },
                 "title": { "type": "string", "description": "The title in the file. Only used in messages." },
                 "sites": {
                     "type": "array",
@@ -414,7 +406,7 @@
             "required": ["url"],
             "properties": {
                 "type": { "type": "string", "enum": ["url"] },
-                "url": { "type": "string", "format": "uri-reference" },
+                "url": { "$ref": "#/$defs/datasource.file" },
                 "title": { "type": "string" },
                 "altText": { "type": "string" }
             }
