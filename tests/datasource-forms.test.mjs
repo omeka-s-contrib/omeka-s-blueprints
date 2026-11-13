@@ -21,6 +21,8 @@ const CASES = {
   "gh:owner/repo@v1:dist/Module.zip": "gitRepoFile",
   "gh:owner/repo:config/a.php": "gitRepoFile",
   "gl:group/sub/repo@v1:config/b.php": "gitRepoFile",
+  "gh:owner/repo#v1:dist/M.zip": "gitRepoShorthand",
+  "gl:group/repo#x:a.php": null,
   "https://github.com/owner/repo/archive/refs/tags/v1.3.1.zip": "url",
   "https://github.com/owner/repo/releases/download/v1.3.1/Repo-1.3.1.zip": "url",
   "https://github.com/owner/repo/tree/main": "url",

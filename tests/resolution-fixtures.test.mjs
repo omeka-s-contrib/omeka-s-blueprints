@@ -60,9 +60,11 @@ for (const name of cases) {
     assert.ok(validate(readJson(join(caseDir, "blueprint.json"))), errorsText(validate.errors));
     const imports = importedLists(caseDir);
     for (const [file, key] of imports) {
-      const validatePartial = validatorFor(key);
-      if (!validatePartial) continue; // e.g. items: no partial, array already asserted
-      assert.ok(validatePartial(readJson(file)), `${relative(caseDir, file)}\n${errorsText(validatePartial.errors)}`);
+      const data = readJson(file);
+      // Lists without a partial (e.g. items) are checked inside the main schema instead.
+      const validatePartial = validatorFor(key) ?? validate;
+      const subject = validatorFor(key) ? data : { [key]: data };
+      assert.ok(validatePartial(subject), `${relative(caseDir, file)}\n${errorsText(validatePartial.errors)}`);
     }
     const reached = new Set([join(caseDir, "blueprint.json"), join(caseDir, "expected.json"), ...imports.keys()]);
     for (const file of walkFiles(caseDir).filter((f) => f.endsWith(".json"))) {
