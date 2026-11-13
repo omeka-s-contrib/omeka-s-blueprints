@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "vocabularies": [{ "source": "file:///tmp/v.ttl", "namespaceUri": "http://example.org/v#", "prefix": "v", "label": "V" }]
+}

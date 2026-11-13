@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { main } from "./ajv.mjs";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { main, validatorFor } from "./ajv.mjs";
 
 const ANNOTATION = "x-blueprint-reference";
 
@@ -52,4 +54,20 @@ test("the walk finds every source field", () => {
         "users[].$import=resource",
         "vocabularies[].$import=resource", "vocabularies[].source=resource",
     ]);
+});
+
+test("invalid source fixtures fail at a source field", () => {
+    const dir = new URL("../fixtures/invalid/", import.meta.url).pathname;
+    const files = readdirSync(dir).filter((f) => /^source-.*\.json$/.test(f));
+    assert.ok(files.length >= 8, `expected at least 8 source-*.json fixtures, found ${files.length}`);
+    const validate = validatorFor();
+    for (const file of files) {
+        const data = JSON.parse(readFileSync(join(dir, file), "utf8"));
+        assert.equal(validate(data), false, `${file} should be invalid`);
+        const paths = validate.errors.map((e) => e.instancePath);
+        assert.ok(
+            paths.some((p) => /\/(source|url|\$import)$/.test(p)),
+            `${file}: no error at a source field, got ${paths.join(", ")}`,
+        );
+    }
 });
