@@ -5,9 +5,15 @@ Every top-level key of a blueprint, its fields and how consumers read them.
 ## Common rules
 
 - **Strict keys.** Unknown keys are rejected. Only top-level keys that start with `x-` are free-form.
-- **`$import`.** Any list entry can be `{ "$import": "path-or-url" }`. The file it points to holds more entries of the same list (or a single entry), spliced in place. How relative `$import` paths resolve is still being specified ([#10](https://github.com/omeka-s-contrib/omeka-s-blueprints/issues/10)).
+- **`$import`.** Any list entry can be `{ "$import": "path-or-url" }`. The file it points to holds more entries of the same list (or a single entry), spliced in place.
 - **Last one wins.** When two entries describe the same thing, the later one applies and consumers should warn.
-- **Relative paths** in `files` and `vocabularies` resolve against the blueprint file.
+- **Sources.** A `source`, an `$import` and a media `url` are a relative path, an `https://` URL,
+  or a file in a repository: `gh:owner/repo[@ref]:path` or `gl:namespace[@ref]:path`.
+  Modules and themes also accept a git repository: a git URL, `https://github.com/owner/repo`
+  or `gh:owner/repo`, each with an optional `#ref`.
+- **Relative paths** resolve against the file that declares them: the blueprint or an imported
+  file. They must stay inside the blueprint root; absolute paths are rejected. Write them with
+  `./`; paths without it are still valid.
 - **Optional parts.** A consumer may ignore keys it does not support, and documents which ones in its support matrix.
 
 ```json
@@ -37,7 +43,7 @@ Each entry is a module name, an object or an `$import`.
 | `name` | string, required | Module directory name, such as `CleanUrl` |
 | `state` | `download`, `install` or `activate` | `download` places the files, `install` installs, `activate` installs and enables |
 | `version` | string | Release on omeka.org, or tag or branch of a git source. A ZIP `source` wins over it. |
-| `source` | string | ZIP URL, git URL or `gh:owner/repo`. Without it, the module already installed is used, or `name` is looked up on omeka.org. |
+| `source` | string | ZIP or git repository (see [*Sources*](#common-rules)). A `#ref` or a ZIP wins over `version`. Without it, the module already installed is used, or `name` is looked up on omeka.org. |
 
 ```json
 "modules": [
@@ -62,7 +68,7 @@ Files copied into the installation after modules and themes are in place.
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL of the file |
+| `source` | string, required | Path or URL of the file (see [*Sources*](#common-rules)) |
 | `destination` | string, required | Path inside the Omeka S root. Absolute paths and `..` are not allowed. |
 | `extract` | boolean, default `false` | Unzip `source` into `destination`. A single top-level directory in the archive is skipped, as with add-ons. |
 
@@ -78,7 +84,7 @@ RDF vocabularies imported with the RDF importer.
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL of the RDF file |
+| `source` | string, required | Path or URL of the RDF file (see [*Sources*](#common-rules)) |
 | `namespaceUri`, `prefix`, `label` | string, required | How the vocabulary appears in Omeka S |
 | `comment`, `format`, `lang` | string | Passed to the importer |
 | `labelProperty`, `commentProperty` | string | RDF properties to read labels and comments from |
@@ -95,7 +101,7 @@ Resource templates imported from a JSON export.
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL of the export |
+| `source` | string, required | Path or URL of the export (see [*Sources*](#common-rules)) |
 | `label` | string | Label to use instead of the one in the export |
 | `ignoreDeps` | boolean | Skip the dependency check when importing |
 
