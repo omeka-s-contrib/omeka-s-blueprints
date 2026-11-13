@@ -42,7 +42,7 @@ Each entry is a module name, an object or an `$import`.
 |---|---|---|
 | `name` | string, required | Module directory name, such as `CleanUrl` |
 | `state` | `download`, `install` or `activate` | `download` places the files, `install` installs, `activate` installs and enables |
-| `version` | string | Release on omeka.org, or tag or branch of a git source. A ZIP `source` wins over it. |
+| `version` | string | Release on omeka.org, or tag or branch of a git source. A ZIP or a `#ref` in `source` wins over it. |
 | `source` | string | ZIP or git repository (see [*Sources*](#common-rules)). A `#ref` or a ZIP wins over `version`. Without it, the module already installed is used, or `name` is looked up on omeka.org. |
 
 ```json

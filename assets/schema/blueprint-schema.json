@@ -94,7 +94,7 @@
         },
         "datasource.gitRepoFile": {
             "type": "string",
-            "pattern": "^(gh:[^/@:]+/[^/@:]+|gl:[^@:]+)(@[^:]+)?:.+$"
+            "pattern": "^(gh:[^/@:#]+/[^/@:#]+|gl:[^@:#]+)(@[^:]+)?:.+$"
         },
 
         "datasource.file": {
@@ -140,7 +140,7 @@
         },
         "addonVersion": {
             "type": "string",
-            "description": "Release to use when resolving through omeka.org, or tag/branch for a git source. A source that pins a release (a ZIP URL) wins; consumers may warn when they differ."
+            "description": "Release to use when resolving through omeka.org, or tag/branch for a git source. A source that pins a release or ref (a ZIP, or a #ref) wins; consumers may warn when they differ."
         },
         "module": {
             "type": "object",
@@ -202,7 +202,7 @@
             "properties": {
                 "source": {
                     "$ref": "#/$defs/datasource.file",
-                    "description": "Path or URL of the file. Relative paths resolve against the blueprint file."
+                    "description": "Path or URL of the file. Relative paths resolve against the file that declares them."
                 },
                 "destination": {
                     "$ref": "#/$defs/instancePath",
@@ -233,7 +233,7 @@
             "properties": {
                 "source": {
                     "$ref": "#/$defs/datasource.file",
-                    "description": "Path or URL of the RDF file. Relative paths resolve against the blueprint file."
+                    "description": "Path or URL of the RDF file. Relative paths resolve against the file that declares them."
                 },
                 "namespaceUri": { "type": "string" },
                 "prefix": { "type": "string" },

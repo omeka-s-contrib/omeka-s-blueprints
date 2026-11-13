@@ -5,5 +5,8 @@
     ],
     "items": [
         { "$import": "./content/items.json" }
+    ],
+    "itemSets": [
+        { "$import": "./content/item-sets.json" }
     ]
 }
