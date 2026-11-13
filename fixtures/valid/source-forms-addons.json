@@ -1,0 +1,28 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [
+        { "name": "ZipUrl", "source": "https://example.org/zips/ZipUrl.zip" },
+        { "name": "ZipDot", "source": "./zips/M.zip" },
+        { "name": "ZipPlain", "source": "zips/M.zip" },
+        { "name": "GitUrl", "source": "https://gitlab.com/owner/GitUrl.git" },
+        { "name": "GitRef", "source": "https://gitlab.com/owner/GitRef.git#v1.2.0" },
+        { "name": "GitSsh", "source": "git@gitlab.com:owner/GitSsh.git" },
+        { "name": "GhRepo", "source": "https://github.com/owner/GhRepo" },
+        { "name": "GhSlash", "source": "https://github.com/owner/GhSlash/" },
+        { "name": "GhRef", "source": "https://github.com/owner/GhRef#v2.0.0" },
+        { "name": "GhShort", "source": "gh:owner/GhShort" },
+        { "name": "GhShortRef", "source": "gh:owner/GhShortRef#main" },
+        { "name": "RefAndVersion", "source": "gh:owner/RefAndVersion#v3.0.0", "version": "3.0.0-rc1" },
+        { "name": "Release", "source": "https://github.com/owner/Release/releases/download/v1.0.0/Release-1.0.0.zip" },
+        { "name": "Archive", "source": "https://github.com/owner/Archive/archive/refs/tags/v1.0.0.zip" },
+        { "name": "GhFile", "source": "gh:owner/GhFile@v1:dist/M.zip" }
+    ],
+    "themes": [
+        { "name": "zipurl", "source": "https://example.org/zips/zipurl.zip" },
+        { "name": "ziprel", "source": "./zips/t.zip" },
+        { "name": "giturl", "source": "https://gitlab.com/owner/giturl.git" },
+        { "name": "ghrepo", "source": "https://github.com/owner/ghrepo" },
+        { "name": "ghshort", "source": "gh:owner/ghshort" },
+        { "name": "ghfile", "source": "gh:owner/ghfile@v1:dist/t.zip" }
+    ]
+}

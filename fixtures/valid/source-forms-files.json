@@ -1,0 +1,40 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [
+        { "$import": "./partials/modules.json" },
+        { "$import": "https://example.org/blueprints/modules.json" }
+    ],
+    "users": [
+        { "$import": "partials/users.json" },
+        { "$import": "https://example.org/blueprints/users.json" }
+    ],
+    "settings": [
+        { "$import": "./settings.json" },
+        { "$import": "https://example.org/blueprints/settings.json" }
+    ],
+    "files": [
+        { "source": "./config/a.php", "destination": "config/a.php" },
+        { "source": "config/b.php", "destination": "config/b.php" },
+        { "source": "https://example.org/config/c.php", "destination": "config/c.php" },
+        { "source": "https://github.com/owner/repo/blob/main/config/d.php", "destination": "config/d.php" },
+        { "source": "https://github.com/owner/repo/tree/main/config", "destination": "config/tree" },
+        { "source": "gh:owner/repo@main:config/a.php", "destination": "config/e.php" },
+        { "source": "gl:group/sub/repo@v1:config/b.php", "destination": "config/f.php" }
+    ],
+    "vocabularies": [
+        { "source": "./vocab/a.ttl", "namespaceUri": "http://example.org/a#", "prefix": "a", "label": "A" },
+        { "source": "vocab/b.ttl", "namespaceUri": "http://example.org/b#", "prefix": "b", "label": "B" },
+        { "source": "https://example.org/vocab/c.ttl", "namespaceUri": "http://example.org/c#", "prefix": "c", "label": "C" },
+        { "source": "https://github.com/owner/repo/blob/main/vocab/d.ttl", "namespaceUri": "http://example.org/d#", "prefix": "d", "label": "D" },
+        { "source": "gh:owner/repo@main:vocab/e.ttl", "namespaceUri": "http://example.org/e#", "prefix": "e", "label": "E" },
+        { "source": "gl:group/sub/repo@v1:vocab/f.ttl", "namespaceUri": "http://example.org/f#", "prefix": "f", "label": "F" }
+    ],
+    "resourceTemplates": [
+        { "source": "./templates/a.json" },
+        { "source": "templates/b.json" },
+        { "source": "https://example.org/templates/c.json" },
+        { "source": "https://github.com/owner/repo/tree/main/templates" },
+        { "source": "gh:owner/repo@main:templates/d.json" },
+        { "source": "gl:group/sub/repo@v1:templates/e.json" }
+    ]
+}

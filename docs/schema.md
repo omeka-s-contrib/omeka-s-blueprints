@@ -27,6 +27,14 @@ Lists shared with `$import` can be validated on their own, with the schema under
 | `settings` | [`schema/v0/partials/settings.schema.json`](https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/partials/settings.schema.json) |
 | `users` | [`schema/v0/partials/users.schema.json`](https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/partials/users.schema.json) |
 
+## Source fields
+
+Every field that holds a source references a type with the `x-blueprint-reference` annotation:
+`resource` for a single file, `addon` for a module or theme source, which may also be a git
+repository. To find the source fields, walk the schema from the root `properties`, follow local
+`$ref`s, and stop at a type with the annotation. Every future source field will use one of these
+types. A tool should stop with an error on an annotation value it does not know.
+
 ## Versioning
 
 !!! note "These pages follow `main`, the schema follows releases"
