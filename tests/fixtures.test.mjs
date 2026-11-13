@@ -7,24 +7,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import Ajv2020 from "ajv/dist/2020.js";
-import addFormats from "ajv-formats";
+import { validatorFor, errorsText } from "./ajv.mjs";
 
 const root = new URL("..", import.meta.url).pathname;
 const schemaDir = join(root, "assets/schema");
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
-
-const main = readJson(join(schemaDir, "blueprint-schema.json"));
-const baseId = main.$id.replace(/[^/]+$/, "");
-const ajv = new Ajv2020({ allErrors: true, strict: false });
-addFormats(ajv);
-ajv.addSchema(main);
-for (const file of readdirSync(join(schemaDir, "partials"))) {
-  ajv.addSchema(readJson(join(schemaDir, "partials", file)));
-}
-
-const validatorFor = (partial) =>
-  ajv.getSchema(partial ? `${baseId}partials/${partial}.schema.json` : main.$id);
 
 function* fixtures(kind) {
   const dir = join(root, "fixtures", kind);
@@ -51,14 +38,14 @@ test("all schemas compile", () => {
 for (const { path, file, partial } of fixtures("valid")) {
   test(`valid: ${path}`, () => {
     const validate = validatorFor(partial);
-    assert.ok(validate(readJson(file)), ajv.errorsText(validate.errors, { separator: "\n" }));
+    assert.ok(validate(readJson(file)), errorsText(validate.errors));
   });
 }
 
 for (const file of readdirSync(join(root, "docs/examples"))) {
   test(`example: docs/examples/${file}`, () => {
     const validate = validatorFor();
-    assert.ok(validate(readJson(join(root, "docs/examples", file))), ajv.errorsText(validate.errors, { separator: "\n" }));
+    assert.ok(validate(readJson(join(root, "docs/examples", file))), errorsText(validate.errors));
   });
 }
 
