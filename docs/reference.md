@@ -7,13 +7,17 @@ Every top-level key of a blueprint, its fields and how consumers read them.
 - **Strict keys.** Unknown keys are rejected. Only top-level keys that start with `x-` are free-form.
 - **`$import`.** Any list entry can be `{ "$import": "path-or-url" }`. The file it points to holds more entries of the same list (or a single entry), spliced in place.
 - **Last one wins.** When two entries describe the same thing, the later one applies and consumers should warn.
-- **Sources.** A `source`, an `$import` and a media `url` are a relative path, an `https://` URL,
+- **Sources.** A `source`, an `$import` and a media `url` are a relative path, an `http(s)://` URL,
   or a file in a repository: `gh:owner/repo[@ref]:path` or `gl:namespace[@ref]:path`.
   Modules and themes also accept a git repository: a git URL, `https://github.com/owner/repo`
   or `gh:owner/repo`, each with an optional `#ref`.
 - **Relative paths** resolve against the file that declares them: the blueprint or an imported
-  file. They must stay inside the blueprint root; absolute paths are rejected. Write them with
-  `./`; paths without it are still valid.
+  file. `..` is allowed only at the start (`../shared/a.php`, not `a/../b.php`); `\`, spaces and
+  control characters are not allowed. A relative path must stay inside the root: the folder of
+  the blueprint, whether it is a local file or a URL. A file imported by an absolute URL is the
+  root for its own relative paths. A consumer may let the user choose a wider root, for example
+  with a `--root` option. Absolute paths are rejected. Write relative paths with `./`; paths
+  without it are still valid.
 - **Optional parts.** A consumer may ignore keys it does not support, and documents which ones in its support matrix.
 
 ```json
@@ -152,7 +156,7 @@ An entry of `itemSets` or `items` can instead point to a portable JSON-LD file w
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL to the JSON-LD file. A relative path resolves against the file that declares the entry. |
+| `source` | string, required | Path or URL to the JSON-LD file (see [*Sources*](#common-rules)). |
 | `title` | string | The title in the file. Only used in messages, and so that a simple item can name a source item set in `itemSets`. |
 | `sites` | list of strings | Items only. Slugs or titles that replace the file's `o:site`. |
 | `media` | list | Items only. As in a simple item. |
