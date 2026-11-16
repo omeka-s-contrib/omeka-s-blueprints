@@ -88,3 +88,19 @@ test("omeka.addonSource accepts a ZIP path, a repository URL and a shorthand", (
   for (const v of ["./M.zip", "https://github.com/o/r", "gh:o/r#v1"]) assert.equal(addon(v), true, v);
   assert.equal(addon("/M.zip"), false);
 });
+
+test("a module ZIP reaches the resource annotation only through datasource.file", () => {
+  assert.equal(main.$defs["datasource.zip"].$ref, "#/$defs/datasource.singleFile");
+  assert.equal(main.$defs["datasource.file"].$ref, "#/$defs/datasource.singleFile");
+  assert.equal("x-blueprint-reference" in main.$defs["datasource.singleFile"], false);
+});
+
+test("addonSource is a deprecated alias of omeka.addonSource", () => {
+  assert.deepEqual(
+    { $ref: main.$defs.addonSource.$ref, deprecated: main.$defs.addonSource.deprecated },
+    { $ref: "#/$defs/omeka.addonSource", deprecated: true },
+  );
+  const alias = def("addonSource");
+  for (const v of ["./M.zip", "gh:o/r#v1"]) assert.equal(alias(v), true, v);
+  assert.equal(alias("/M.zip"), false);
+});

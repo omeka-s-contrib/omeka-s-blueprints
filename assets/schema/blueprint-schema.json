@@ -97,8 +97,7 @@
             "pattern": "^(?:gh:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?/[A-Za-z0-9._-]+|gl:[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+)(?:@(?:[^\\s\\x00-\\x1f\\x7f~^:?*\\[\\\\.]|\\.(?!\\.))+)?:(?!/)(?!(?:.*/)?\\.\\.(?:/|$))[^\\s\\x00-\\x1f\\x7f\\\\]+$"
         },
 
-        "datasource.file": {
-            "x-blueprint-reference": "resource",
+        "datasource.singleFile": {
             "description": "A single file: relative path, URL or file in a repository.",
             "anyOf": [
                 { "$ref": "#/$defs/datasource.relativePath" },
@@ -106,8 +105,13 @@
                 { "$ref": "#/$defs/datasource.gitRepoFile" }
             ]
         },
+        "datasource.file": {
+            "x-blueprint-reference": "resource",
+            "$ref": "#/$defs/datasource.singleFile",
+            "description": "A single file, resolved against the declaring document."
+        },
         "datasource.zip": {
-            "$ref": "#/$defs/datasource.file",
+            "$ref": "#/$defs/datasource.singleFile",
             "description": "A ZIP archive. A single top-level folder in it is skipped."
         },
         "datasource.gitRepo": {
@@ -126,6 +130,7 @@
                 { "$ref": "#/$defs/datasource.gitRepo" }
             ]
         },
+        "addonSource": { "$ref": "#/$defs/omeka.addonSource", "deprecated": true, "description": "Deprecated alias of omeka.addonSource, kept for external references to v0.1.0." },
 
         "instancePath": {
             "type": "string",
