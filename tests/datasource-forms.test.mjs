@@ -68,6 +68,13 @@ const CASES = {
   " ./a.php": null,
   "\u0000": null,
   "..\\..\\etc\\passwd": null,
+  "a/%2e%2e/%2e%2e/x.php": null,
+  "./a#b.php": null,
+  "./a?b.php": null,
+  "gh:o/r:%2e%2e/%2e%2e/%2e%2e/x/y/main/evil.php": null,
+  "gh:o/r@v1:a.php?x": null,
+  "https://example.org/a\\..\\..\\x.zip": null,
+  "https://example.org/a%20b.zip": "url",
 };
 
 for (const [value, expected] of Object.entries(CASES)) {

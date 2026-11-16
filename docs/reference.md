@@ -12,8 +12,8 @@ Every top-level key of a blueprint, its fields and how consumers read them.
   Modules and themes also accept a git repository: a git URL, `https://github.com/owner/repo`
   or `gh:owner/repo`, each with an optional `#ref`.
 - **Relative paths** resolve against the file that declares them: the blueprint or an imported
-  file. `..` is allowed only at the start (`../shared/a.php`, not `a/../b.php`); `\`, spaces and
-  control characters are not allowed. A relative path must stay inside the root: the folder of
+  file. `..` is allowed only at the start (`../shared/a.php`, not `a/../b.php`); `\`, `%`, `?`, `#`,
+  spaces and control characters are not allowed. A relative path must stay inside the root: the folder of
   the blueprint, whether it is a local file or a URL. A file imported by an absolute URL is the
   root for its own relative paths. A consumer may let the user choose a wider root, for example
   with a `--root` option. Absolute paths are rejected. Write relative paths with `./`; paths

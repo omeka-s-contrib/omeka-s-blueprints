@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "files": [{ "source": "config/%2e%2e/%2e%2e/a.php", "destination": "config/a.php" }]
+}
