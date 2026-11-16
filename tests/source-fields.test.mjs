@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { main, validatorFor } from "./ajv.mjs";
 
 const ANNOTATION = "x-blueprint-reference";
@@ -17,15 +18,12 @@ export function findSourceFields(schema) {
     if (!node || typeof node !== "object") return;
     if (node.$ref !== undefined) {
       const match = /^#\/\$defs\/(.+)$/.exec(node.$ref);
-      if (!match || visited.has(match[1])) return;
-      const target = defs[match[1]];
-      if (!target) return;
-      if (target[ANNOTATION] !== undefined) {
+      const target = match && !visited.has(match[1]) ? defs[match[1]] : undefined;
+      if (target?.[ANNOTATION] !== undefined) {
         found.add(`${path}=${target[ANNOTATION]}`);
         return;
       }
-      walk(target, path, new Set([...visited, match[1]]));
-      return;
+      if (target) walk(target, path, new Set([...visited, match[1]]));
     }
     for (const key of ["oneOf", "anyOf", "allOf"]) {
       for (const branch of node[key] ?? []) walk(branch, path, visited);
@@ -56,8 +54,16 @@ test("the walk finds every source field", () => {
   ]);
 });
 
+test("the walk follows keywords next to a $ref", () => {
+  const schema = {
+    properties: { a: { $ref: "#/$defs/base", properties: { y: { $ref: "#/$defs/src" } } } },
+    $defs: { base: { type: "object" }, src: { "x-blueprint-reference": "resource" } },
+  };
+  assert.deepEqual(findSourceFields(schema), ["a.y=resource"]);
+});
+
 test("invalid source fixtures fail at a source field", () => {
-  const dir = new URL("../fixtures/invalid/", import.meta.url).pathname;
+  const dir = fileURLToPath(new URL("../fixtures/invalid/", import.meta.url));
   const files = readdirSync(dir).filter((f) => /^source-.*\.json$/.test(f));
   assert.ok(files.length >= 8, `expected at least 8 source-*.json fixtures, found ${files.length}`);
   const validate = validatorFor();

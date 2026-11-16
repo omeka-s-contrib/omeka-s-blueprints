@@ -4,9 +4,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync, existsSync, statSync } from "node:fs";
 import { join, dirname, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { validatorFor, errorsText } from "./ajv.mjs";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const resolutionDir = join(root, "fixtures/resolution");
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
 

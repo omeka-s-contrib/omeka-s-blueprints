@@ -1,10 +1,11 @@
 // Shared strict Ajv setup, main schema and validator lookup for the tests.
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import Ajv2020 from "ajv/dist/2020.js";
 import addFormats from "ajv-formats";
 
-const root = new URL("..", import.meta.url).pathname;
+const root = fileURLToPath(new URL("..", import.meta.url));
 const schemaDir = join(root, "assets/schema");
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
 
