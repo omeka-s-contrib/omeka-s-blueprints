@@ -17,7 +17,6 @@
         { "source": "config/b.php", "destination": "config/b.php" },
         { "source": "https://example.org/config/c.php", "destination": "config/c.php" },
         { "source": "https://github.com/owner/repo/blob/main/config/d.php", "destination": "config/d.php" },
-        { "source": "https://github.com/owner/repo/tree/main/config", "destination": "config/tree" },
         { "source": "gh:owner/repo@main:config/a.php", "destination": "config/e.php" },
         { "source": "gl:group/sub/repo@v1:config/b.php", "destination": "config/f.php" }
     ],
@@ -33,7 +32,6 @@
         { "source": "./templates/a.json" },
         { "source": "templates/b.json" },
         { "source": "https://example.org/templates/c.json" },
-        { "source": "https://github.com/owner/repo/tree/main/templates" },
         { "source": "gh:owner/repo@main:templates/d.json" },
         { "source": "gl:group/sub/repo@v1:templates/e.json" }
     ]

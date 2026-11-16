@@ -65,7 +65,7 @@ test("the walk follows keywords next to a $ref", () => {
 test("invalid source fixtures fail at a source field", () => {
   const dir = fileURLToPath(new URL("../fixtures/invalid/", import.meta.url));
   const files = readdirSync(dir).filter((f) => /^source-.*\.json$/.test(f));
-  assert.ok(files.length >= 8, `expected at least 8 source-*.json fixtures, found ${files.length}`);
+  assert.ok(files.length >= 15, `expected at least 15 source-*.json fixtures, found ${files.length}`);
   const validate = validatorFor();
   for (const file of files) {
     const data = JSON.parse(readFileSync(join(dir, file), "utf8"));

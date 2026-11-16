@@ -77,24 +77,24 @@
 
         "datasource.relativePath": {
             "type": "string",
-            "description": "Path relative to the declaring document; must stay inside the permitted root. './' is recommended.",
-            "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?![/\\\\])(?!git@).+$"
+            "description": "Path relative to the declaring document. '..' only as leading segments; no '\\', whitespace or control characters. It must stay inside the root. './' is recommended.",
+            "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!git@)(?:\\./)?(?:\\.\\./)*(?!\\.\\.?(?:/|$))[^\\s\\x00-\\x1f\\x7f/\\\\]+(?:/(?!\\.\\.?(?:/|$))[^\\s\\x00-\\x1f\\x7f/\\\\]+)*$"
         },
         "datasource.url": {
             "type": "string",
-            "pattern": "^(?!https://github\\.com/[^/#]+/[^/#]+/?(#.*)?$)https?://(?!.*\\.git(#.*)?$).+$"
+            "pattern": "^(?!https://github\\.com/[^/?#]+/[^/?#]+/?(?:[?#].*)?$)(?![^?#]*\\.git(?:#.*)?$)https?://[^\\s\\x00-\\x1f\\x7f/?#\\\\@]+(?:@[^\\s\\x00-\\x1f\\x7f/?#\\\\@]+)?(?:[/?#][^\\s\\x00-\\x1f\\x7f]*)?$"
         },
         "datasource.gitRepoUrl": {
             "type": "string",
-            "pattern": "^(https?://.+\\.git|https://github\\.com/[^/#]+/[^/#]+/?|git@[^:]+:.+)(#.+)?$"
+            "pattern": "^(?:https?://[^\\s\\x00-\\x1f\\x7f/?#\\\\@]+(?:@[^\\s\\x00-\\x1f\\x7f/?#\\\\@]+)?/[^\\s\\x00-\\x1f\\x7f?#\\\\]+\\.git|https://github\\.com/[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?/[A-Za-z0-9._-]+/?|git@[^\\s\\x00-\\x1f\\x7f:/\\\\]+:[^\\s\\x00-\\x1f\\x7f#\\\\]+\\.git)(?:#(?:[^\\s\\x00-\\x1f\\x7f~^:?*\\[\\\\.]|\\.(?!\\.))+)?$"
         },
         "datasource.gitRepoShorthand": {
             "type": "string",
-            "pattern": "^gh:[^/@:#]+/[^/@:#]+(#.+)?$"
+            "pattern": "^gh:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?/[A-Za-z0-9._-]+(?:#(?:[^\\s\\x00-\\x1f\\x7f~^:?*\\[\\\\.]|\\.(?!\\.))+)?$"
         },
         "datasource.gitRepoFile": {
             "type": "string",
-            "pattern": "^(gh:[^/@:#]+/[^/@:#]+|gl:[^@:#]+)(@[^:]+)?:.+$"
+            "pattern": "^(?:gh:[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?/[A-Za-z0-9._-]+|gl:[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_.-]+)+)(?:@(?:[^\\s\\x00-\\x1f\\x7f~^:?*\\[\\\\.]|\\.(?!\\.))+)?:(?!/)(?!(?:.*/)?\\.\\.(?:/|$))[^\\s\\x00-\\x1f\\x7f\\\\]+$"
         },
 
         "datasource.file": {
