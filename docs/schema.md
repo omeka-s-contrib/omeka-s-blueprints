@@ -35,7 +35,8 @@ repository. To find the source fields, walk the schema from the root `properties
 `$ref`s together with the keywords next to them, and stop at a type with the annotation. Every
 future source field will use one of these types. A tool should stop with an error on an annotation
 value it does not know. The data source forms (the `datasource.*` types) describe syntax only: they
-tell the forms apart, but do not check hosts. Which forms and hosts a consumer supports is in its
+tell the forms apart, but do not recognise hosts, with one exception kept for compatibility:
+`https://github.com/OWNER/REPO` is a repository. Which forms and hosts a consumer supports is in its
 support matrix, and a value the schema accepts can still fail when a consumer resolves it.
 
 ## Versioning
