@@ -57,7 +57,7 @@ The schema is published on GitHub Pages for every tag:
 
 Partials live next to it, under `partials/`. Do not point to `main`, it can carry unreleased breaking changes.
 
-Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions: `v0` is already treated as a stable major, so a breaking change (a field removed, renamed or made stricter) bumps it to `v1`. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the site. Pushes to `main` update the documentation only; the files under `schema/` always come from the tags.
+Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions: `v0` is already treated as a stable major, so a breaking change (a field removed or renamed, or a value that a consumer accepted now rejected) bumps it to `v1`. Rejecting values that no consumer accepted is not breaking. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the site. Pushes to `main` update the documentation only; the files under `schema/` always come from the tags.
 
 ## Development
 

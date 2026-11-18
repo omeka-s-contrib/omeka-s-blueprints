@@ -1,0 +1,113 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { createAjv, main } from "./ajv.mjs";
+
+const ajv = createAjv();
+const def = (name) => ajv.getSchema(`${main.$id}#/$defs/${name}`);
+
+const FORMS = ["relativePath", "url", "gitRepoUrl", "gitRepoShorthand", "gitRepoFile"];
+const CASES = {
+  "https://github.com/owner/repo": "gitRepoUrl",
+  "https://github.com/owner/repo/": "gitRepoUrl",
+  "https://github.com/owner/repo#v1.3.1": "gitRepoUrl",
+  "https://github.com/owner/repo/#v1.3.1": "gitRepoUrl",
+  "https://github.com/owner/repo.git": "gitRepoUrl",
+  "https://github.com/owner/repo.git#v1.3.1": "gitRepoUrl",
+  "https://gitlab.com/group/repo.git": "gitRepoUrl",
+  "git@github.com:owner/repo.git": "gitRepoUrl",
+  "git@github.com:owner/repo.git#main": "gitRepoUrl",
+  "gh:owner/repo": "gitRepoShorthand",
+  "gh:owner/repo#v1.3.1": "gitRepoShorthand",
+  "gh:owner/repo@v1:dist/Module.zip": "gitRepoFile",
+  "gh:owner/repo:config/a.php": "gitRepoFile",
+  "gl:group/sub/repo@v1:config/b.php": "gitRepoFile",
+  "gh:owner/repo#v1:dist/M.zip": null,
+  "gl:group/repo#x:a.php": null,
+  "https://github.com/owner/repo/archive/refs/tags/v1.3.1.zip": "url",
+  "https://github.com/owner/repo/releases/download/v1.3.1/Repo-1.3.1.zip": "url",
+  "https://github.com/owner/repo/tree/main": "url",
+  "https://github.com/owner/repo/blob/main/README.md": "url",
+  "https://github.com/owner": "url",
+  "https://example.org/Module-1.2.3.zip": "url",
+  "https://example.org/dl?id=5#frag": "url",
+  "http://github.com/owner/repo": "url",
+  "https://www.github.com/owner/repo": "url",
+  "./modules/Module-1.2.3.zip": "relativePath",
+  "modules/Module-1.2.3.zip": "relativePath",
+  "../shared/Module.zip": "relativePath",
+  ".\\zips\\M.zip": null,
+  "/tmp/Module.zip": null,
+  "\\\\server\\share\\M.zip": null,
+  "C:\\M.zip": null,
+  "file:///tmp/Module.zip": null,
+  "php://input": null,
+  "HTTPS://example.org/M.zip": null,
+  "gh:owner": null,
+  "gl:group/repo": null,
+  "": null,
+  "https://www.github.com/owner/repo#v1": "url",
+  "https://github.com/owner/repo?tab=readme-ov-file": null,
+  "https://example.org/dl?f=x.git": "url",
+  "https://user:pw@example.org/a.zip": "url",
+  "https:///x.zip": null,
+  "https://example.org/a b.zip": null,
+  "git@github.com:owner/repo": null,
+  "gh:owner/repo#feature/x": "gitRepoShorthand",
+  "gh:owner/repo#v1..v2": null,
+  "gh:-bad/repo": null,
+  "gh:o/r@v1:dist/a..b.zip": "gitRepoFile",
+  "gh:o/r:../../x/y/main/evil.php": null,
+  "gl:repo:a.php": null,
+  "../../x/M.zip": "relativePath",
+  "./files/..hidden": "relativePath",
+  "ünïcode/fïle.php": "relativePath",
+  "a/../b.php": null,
+  "./a/./b.php": null,
+  "lists/": null,
+  "a b.php": null,
+  " ./a.php": null,
+  "\u0000": null,
+  "..\\..\\etc\\passwd": null,
+  "a/%2e%2e/%2e%2e/x.php": null,
+  "./a#b.php": null,
+  "./a?b.php": null,
+  "gh:o/r:%2e%2e/%2e%2e/%2e%2e/x/y/main/evil.php": null,
+  "gh:o/r@v1:a.php?x": null,
+  "https://example.org/a\\..\\..\\x.zip": null,
+  "https://example.org/a%20b.zip": "url",
+};
+
+for (const [value, expected] of Object.entries(CASES)) {
+  test(`form of ${JSON.stringify(value)} is ${expected}`, () => {
+    const matched = FORMS.filter((form) => def(`datasource.${form}`)(value));
+    assert.deepEqual(matched, expected ? [expected] : []);
+  });
+}
+
+test("datasource.file accepts a path, a URL and a repository file", () => {
+  const file = def("datasource.file");
+  for (const v of ["./a.php", "https://example.org/a.php", "gh:o/r:a.php"]) assert.equal(file(v), true, v);
+  assert.equal(file("gh:o/r"), false);
+});
+
+test("omeka.addonSource accepts a ZIP path, a repository URL and a shorthand", () => {
+  const addon = def("omeka.addonSource");
+  for (const v of ["./M.zip", "https://github.com/o/r", "gh:o/r#v1"]) assert.equal(addon(v), true, v);
+  assert.equal(addon("/M.zip"), false);
+});
+
+test("a module ZIP reaches the resource annotation only through datasource.file", () => {
+  assert.equal(main.$defs["datasource.zip"].$ref, "#/$defs/datasource.singleFile");
+  assert.equal(main.$defs["datasource.file"].$ref, "#/$defs/datasource.singleFile");
+  assert.equal("x-blueprint-reference" in main.$defs["datasource.singleFile"], false);
+});
+
+test("addonSource is a deprecated alias of omeka.addonSource", () => {
+  assert.deepEqual(
+    { $ref: main.$defs.addonSource.$ref, deprecated: main.$defs.addonSource.deprecated },
+    { $ref: "#/$defs/omeka.addonSource", deprecated: true },
+  );
+  const alias = def("addonSource");
+  for (const v of ["./M.zip", "gh:o/r#v1"]) assert.equal(alias(v), true, v);
+  assert.equal(alias("/M.zip"), false);
+});

@@ -27,12 +27,24 @@ Lists shared with `$import` can be validated on their own, with the schema under
 | `settings` | [`schema/v0/partials/settings.schema.json`](https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/partials/settings.schema.json) |
 | `users` | [`schema/v0/partials/users.schema.json`](https://omeka-s-contrib.github.io/omeka-s-blueprints/schema/v0/partials/users.schema.json) |
 
+## Source fields
+
+Every field that holds a source references a type with the `x-blueprint-reference` annotation:
+`resource` for a single file, `addon` for a module or theme source, which may also be a git
+repository. To find the source fields, walk the schema from the root `properties`, follow local
+`$ref`s together with the keywords next to them, and stop at a type with the annotation. Every
+future source field will use one of these types. A tool should stop with an error on an annotation
+value it does not know. The data source forms (the `datasource.*` types) describe syntax only: they
+tell the forms apart, but do not recognise hosts, with one exception kept for compatibility:
+`https://github.com/OWNER/REPO` is a repository. Which forms and hosts a consumer supports is in its
+support matrix, and a value the schema accepts can still fail when a consumer resolves it.
+
 ## Versioning
 
 !!! note "These pages follow `main`, the schema follows releases"
 
     The documentation is rebuilt on every change to `main`. The files under `schema/` only come from release tags, so `schema/v0/` keeps serving the last release until a new `vX.Y.Z` tag is pushed.
 
-Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions. `v0` is already treated as a stable major: a breaking change (a field removed, renamed or made stricter) bumps it to `v1`. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the schema.
+Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions. `v0` is already treated as a stable major: a breaking change (a field removed or renamed, or a value that a consumer accepted now rejected) bumps it to `v1`. Rejecting values that no consumer accepted is not breaking. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the schema.
 
 See the [tags](https://github.com/omeka-s-contrib/omeka-s-blueprints/tags) for every release.

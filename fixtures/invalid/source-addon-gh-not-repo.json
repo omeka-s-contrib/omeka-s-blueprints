@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "modules": [{ "name": "Mod", "source": "gh:owner" }]
+}
