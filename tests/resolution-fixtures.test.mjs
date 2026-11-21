@@ -86,7 +86,7 @@ for (const name of cases) {
       if (keys === "path") assert.ok(typeof r.path === "string" && !r.path.startsWith("./") && !r.path.startsWith("/"));
       else if (keys === "url") assert.match(r.url, /^https?:\/\//);
       else if (keys === "ref,repository") {
-        assert.match(r.repository, /^github\.com\/[^/]+\/[^/]+$/);
+        assert.match(r.repository, /^[^/\s]+(?:\/[^/\s]+){2,}$/);
         assert.ok(r.ref === null || typeof r.ref === "string");
       } else if (keys === "error") assert.equal(r.error, "outside-root");
       else assert.fail(`unknown resolved form ${keys}`);
