@@ -16,6 +16,10 @@ export function findSourceFields(schema) {
 
   function walk(node, path, visited) {
     if (!node || typeof node !== "object") return;
+    if (node[ANNOTATION] !== undefined) {
+      found.add(`${path}=${node[ANNOTATION]}`);
+      return;
+    }
     if (node.$ref !== undefined) {
       const match = /^#\/\$defs\/(.+)$/.exec(node.$ref);
       const target = match && !visited.has(match[1]) ? defs[match[1]] : undefined;
@@ -60,6 +64,14 @@ test("the walk follows keywords next to a $ref", () => {
     $defs: { base: { type: "object" }, src: { "x-blueprint-reference": "resource" } },
   };
   assert.deepEqual(findSourceFields(schema), ["a.y=resource"]);
+});
+
+test("the walk finds an annotation on the node itself", () => {
+  const schema = {
+    properties: { a: { "x-blueprint-reference": "resource", $ref: "#/$defs/s" } },
+    $defs: { s: { type: "string" } },
+  };
+  assert.deepEqual(findSourceFields(schema), ["a=resource"]);
 });
 
 test("invalid source fixtures fail at a source field", () => {
