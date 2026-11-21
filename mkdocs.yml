@@ -16,6 +16,9 @@ nav:
 
 theme:
   name: material
+  custom_dir: overrides
+  logo: assets/logo/icon.svg
+  favicon: assets/logo/favicon.svg
   font:
     text: IBM Plex Sans
     code: IBM Plex Mono

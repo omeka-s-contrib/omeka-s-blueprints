@@ -1,4 +1,9 @@
-# Omeka S Blueprints
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/logo-dark.svg">
+    <img alt="Omeka S Blueprints" src=".github/logo.svg" width="360">
+  </picture>
+</h1>
 
 A shared, declarative JSON format to describe an Omeka S environment: modules, themes, vocabularies, resource templates, settings, users, sites and content.
 
