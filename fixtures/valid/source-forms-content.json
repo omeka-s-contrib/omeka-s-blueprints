@@ -1,0 +1,14 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "itemSets": [
+        { "source": "./content/item-sets/a.jsonld", "title": "A" },
+        { "source": "content/item-sets/b.jsonld" },
+        { "$import": "./partials/item-sets.json" }
+    ],
+    "items": [
+        { "source": "./content/items/a.jsonld" },
+        { "source": "https://example.org/content/items/b.jsonld", "media": [{ "url": "./media/b.png" }, { "url": "https://example.org/media/b2.png" }] },
+        { "title": "Plain", "media": [{ "type": "url", "url": "media/c.png", "title": "C" }, { "url": "https://example.org/media/c2.png" }] },
+        { "$import": "https://example.org/blueprints/items.json" }
+    ]
+}
