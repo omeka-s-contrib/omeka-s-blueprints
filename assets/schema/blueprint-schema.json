@@ -78,13 +78,13 @@
         "datasource.relativePath": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^(?![^/]*:)(?![/\\\\])",
-            "description": "Path relative to the declaring document: no scheme, not absolute. A URI reference: consumers decode %XX to read a local file. It must stay inside the root. './' is recommended."
+            "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!git@[^/:]*:)(?![/\\\\])",
+            "description": "Path relative to the declaring document: no scheme, not absolute. A URL reference: resolved against the declaring document, and decoded only to read a local file. It must stay inside the root. './' is recommended."
         },
         "datasource.url": {
             "type": "string",
             "pattern": "^[Hh][Tt][Tt][Pp][Ss]?://[^/?#]+",
-            "description": "An http(s) URL. A URL whose path ends in .git, or https://github.com/OWNER/REPO (with or without a trailing /), is a git repository; any other URL is a download."
+            "description": "An http(s) URL. A URL whose path ends in .git, or https://github.com/OWNER/REPO (with or without a trailing /), is a git repository; any other URL is a file."
         },
         "datasource.git": {
             "type": "string",
@@ -125,7 +125,7 @@
         },
         "addonVersion": {
             "type": "string",
-            "description": "Release to use when resolving through omeka.org, or tag/branch for a git source. A source that pins a release or ref (a ZIP, or a #ref) wins; consumers may warn when they differ."
+            "description": "Release to use when resolving through omeka.org, or tag/branch for a git repository. A source that pins a release or ref (a ZIP, or a #ref) wins; consumers may warn when they differ."
         },
         "module": {
             "type": "object",

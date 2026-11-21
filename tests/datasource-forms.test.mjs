@@ -15,10 +15,10 @@ const CASES = {
   "gl:group/sub/repo@v1:config/a.php": "git", "git@github.com:owner/repo.git#main": "git", "gh:owner": "git",
   "./config/a.php": "relativePath", "config/a.php": "relativePath", "../shared/a.php": "relativePath",
   "a/../b.php": "relativePath", ".\\zips\\M.zip": "relativePath", "./My%20File.pdf": "relativePath",
-  "caf\u00e9.jpg": "relativePath", "./10:00.json": "relativePath", "10:00.json": null, "git@foo/bar": "relativePath", "Mapping": "relativePath",
+  "caf\u00e9.jpg": "relativePath", "./10:00.json": "relativePath", "10:00.json": "relativePath", "a:b.json": null, "git@foo/bar": "relativePath", "Mapping": "relativePath",
   "/etc/a.php": null, "\\\\server\\share\\a.php": null, "C:\\a.php": null, "C:/a.php": null,
   "file:///tmp/a.php": null, "php://input": null, "ftp://example.org/a.zip": null, "mailto:a@example.org": null,
-  "deploy@gitlab.example.org:o/r.git": null, "": null,
+  "deploy@gitlab.example.org:o/r.git": "relativePath", "CleanUrl:3.4": null, "git@:x": "git", "": null,
 };
 
 for (const [value, expected] of Object.entries(CASES)) {
