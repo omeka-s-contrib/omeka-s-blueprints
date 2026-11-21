@@ -7,17 +7,22 @@ Every top-level key of a blueprint, its fields and how consumers read them.
 - **Strict keys.** Unknown keys are rejected. Only top-level keys that start with `x-` are free-form.
 - **`$import`.** Any list entry can be `{ "$import": "path-or-url" }`. The file it points to holds more entries of the same list (or a single entry), spliced in place.
 - **Last one wins.** When two entries describe the same thing, the later one applies and consumers should warn.
-- **Sources.** A `source`, an `$import` and a media `url` are a relative path, an `http(s)://` URL,
-  or a file in a repository: `gh:owner/repo[@ref]:path` or `gl:namespace[@ref]:path`.
-  Modules and themes also accept a git repository: a git URL, `https://github.com/owner/repo`
-  or `gh:owner/repo`, each with an optional `#ref`.
+- **Sources.** A `source`, an `$import` and a media `url` are a relative path, an `http(s)://` URL
+  or a git source. An `http(s)://` source is a git repository when its path ends in `.git` or when
+  it is `https://github.com/owner/repo`; any other URL is a download. A git source is
+  `gh:owner/repo[#ref]` or `git@host:path.git[#ref]` (a repository), or `gh:owner/repo[@ref]:path`
+  or `gl:group/repo[@ref]:path` (a file in a repository). Modules and themes may use a repository;
+  other fields need a single file. A `#ref` wins over `version`. The schema only tells the forms
+  apart; a value can still fail when a consumer resolves it.
 - **Relative paths** resolve against the file that declares them: the blueprint or an imported
-  file. `..` is allowed only at the start (`../shared/a.php`, not `a/../b.php`); `\`, `%`, `?`, `#`,
-  spaces and control characters are not allowed. A relative path must stay inside the root: the folder of
-  the blueprint, whether it is a local file or a URL. A file imported by an absolute URL is the
-  root for its own relative paths. A consumer may let the user choose a wider root, for example
-  with a `--root` option. Absolute paths are rejected. Write relative paths with `./`; paths
-  without it are still valid.
+  file. They are URI references: write special characters percent-encoded (`My%20File.pdf`);
+  consumers decode them to read a local file. Absolute paths are rejected. Write them with `./`;
+  paths without it are still valid.
+- **The root.** A relative path must stay inside the root: the folder of the blueprint, local or
+  URL. `../` may go back up to the root, not beyond. A file imported by an absolute URL or by
+  `gh:`/`gl:` is the root for its own relative paths; a file imported by a relative path keeps the
+  root of the file that imports it. A blueprint without a location has no root. A consumer may
+  allow a wider root, for example with `--root`.
 - **Optional parts.** A consumer may ignore keys it does not support, and documents which ones in its support matrix.
 
 ```json
@@ -208,6 +213,18 @@ A record that already exists is not an error: the identity rules above leave it 
 ## `meta` and `preferredVersions`
 
 Informational. `meta` has `title`, `author` and `description`. `preferredVersions` has the `php` and `omeka` versions the blueprint was written for.
+
+## Consumers
+
+The schema identifies the form of a source; it does not check that it is safe. A consumer:
+
+- resolves a relative path against the file that declares it and checks the root on the resolved
+  path, so `..`, `%2e%2e` or `\` cannot leave it;
+- keeps a git source inside its repository;
+- never passes a ref to git as an option;
+- does not show credentials from a URL in its output.
+
+`fixtures/resolution/` has the expected results to test a resolver against.
 
 ## Extensions
 
