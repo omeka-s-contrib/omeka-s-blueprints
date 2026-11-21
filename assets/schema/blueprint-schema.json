@@ -84,7 +84,7 @@
         "datasource.url": {
             "type": "string",
             "pattern": "^[Hh][Tt][Tt][Pp][Ss]?://[^/?#]+",
-            "description": "An http(s) URL. A URL whose path ends in .git, or https://github.com/OWNER/REPO, is a git repository; any other URL is a download."
+            "description": "An http(s) URL. A URL whose path ends in .git, or https://github.com/OWNER/REPO (with or without a trailing /), is a git repository; any other URL is a download."
         },
         "datasource.git": {
             "type": "string",

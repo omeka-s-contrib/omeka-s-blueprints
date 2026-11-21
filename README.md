@@ -50,8 +50,9 @@ Documentation, examples and the schema: <https://omeka-s-contrib.github.io/omeka
 - `assets/schema/blueprint-schema.json`: the blueprint JSON Schema (2020-12).
 - `assets/schema/partials/`: standalone schemas for lists that can be shared with `$import` (modules, themes, files, …).
 - `fixtures/valid/`, `fixtures/invalid/`: conformance fixtures. Files under `fixtures/*/partials/<name>/` are validated against `partials/<name>.schema.json`.
+- `fixtures/resolution/`: how sources resolve, for consumers to test their resolvers against.
 - `docs/`: the documentation site ([Zensical](https://zensical.org), configured in `mkdocs.yml`). `docs/examples/` holds the examples shown on it.
-- `tests/`: validates every fixture and example against the schema.
+- `tests/`: validates every fixture and example against the schema, and checks the form of the resolution fixtures.
 
 ## Versioning
 

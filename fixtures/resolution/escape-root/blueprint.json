@@ -4,6 +4,7 @@
         { "$import": "./lists/modules.json" }
     ],
     "files": [
-        { "source": "../outside.php", "destination": "config/outside.php" }
+        { "source": "../outside.php", "destination": "config/outside.php" },
+        { "source": "..%2f..%2foutside.php", "destination": "config/outside2.php" }
     ]
 }

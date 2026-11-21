@@ -8,21 +8,23 @@ Every top-level key of a blueprint, its fields and how consumers read them.
 - **`$import`.** Any list entry can be `{ "$import": "path-or-url" }`. The file it points to holds more entries of the same list (or a single entry), spliced in place.
 - **Last one wins.** When two entries describe the same thing, the later one applies and consumers should warn.
 - **Sources.** A `source`, an `$import` and a media `url` are a relative path, an `http(s)://` URL
-  or a git source. An `http(s)://` source is a git repository when its path ends in `.git` or when
-  it is `https://github.com/owner/repo`; any other URL is a download. A git source is
-  `gh:owner/repo[#ref]` or `git@host:path.git[#ref]` (a repository), or `gh:owner/repo[@ref]:path`
-  or `gl:group/repo[@ref]:path` (a file in a repository). Modules and themes may use a repository;
-  other fields need a single file. A `#ref` wins over `version`. The schema only tells the forms
-  apart; a value can still fail when a consumer resolves it.
+  or a git source (`gh:`, `gl:` or `git@host:`). A git repository is `gh:owner/repo[#ref]`,
+  `git@host:path.git[#ref]`, an `http(s)://` URL whose path ends in `.git`, or
+  `https://github.com/owner/repo` (a trailing `/` is allowed). `gh:owner/repo[@ref]:path` and
+  `gl:group/repo[@ref]:path` are a file in a repository. Any other URL is a file; consumers may turn
+  GitHub and GitLab `/blob/` page URLs into raw URLs. Modules and themes may use a repository;
+  other fields need a single file. The schema only tells the forms apart; a value can still fail
+  when a consumer resolves it.
 - **Relative paths** resolve against the file that declares them: the blueprint or an imported
-  file. They are URI references: write special characters percent-encoded (`My%20File.pdf`);
-  consumers decode them to read a local file. Absolute paths are rejected. Write them with `./`;
-  paths without it are still valid.
+  file. They are URL references, as in HTML: write `%`, `#` and `?` percent-encoded
+  (`notes%231.pdf`); other characters may be written as they are or encoded (`My File.pdf` or
+  `My%20File.pdf`). Absolute paths are rejected. Write them with `./`; paths without it are still
+  valid, unless they start like a URL scheme (`notes:` in `./notes:1.json`).
 - **The root.** A relative path must stay inside the root: the folder of the blueprint, local or
   URL. `../` may go back up to the root, not beyond. A file imported by an absolute URL or by
-  `gh:`/`gl:` is the root for its own relative paths; a file imported by a relative path keeps the
-  root of the file that imports it. A blueprint without a location has no root. A consumer may
-  allow a wider root, for example with `--root`.
+  `gh:`/`gl:` has its own folder as root; a file imported by a relative path keeps the root of the
+  file that imports it. A blueprint without a location has no root; whether it can use relative
+  paths is up to the consumer. A consumer may allow a wider root, for example with `--root`.
 - **Optional parts.** A consumer may ignore keys it does not support, and documents which ones in its support matrix.
 
 ```json
@@ -51,8 +53,8 @@ Each entry is a module name, an object or an `$import`.
 |---|---|---|
 | `name` | string, required | Module directory name, such as `CleanUrl` |
 | `state` | `download`, `install` or `activate` | `download` places the files, `install` installs, `activate` installs and enables |
-| `version` | string | Release on omeka.org, or tag or branch of a git source. A ZIP or a `#ref` in `source` wins over it. |
-| `source` | string | ZIP or git repository (see [*Sources*](#common-rules)). A `#ref` or a ZIP wins over `version`. Without it, the module already installed is used, or `name` is looked up on omeka.org. |
+| `version` | string | Release on omeka.org, or tag or branch of a git repository. A ZIP or a `#ref` in `source` wins over it. |
+| `source` | string | ZIP or git repository (see [*Sources*](#common-rules)). Without it, the module already installed is used, or `name` is looked up on omeka.org. |
 
 ```json
 "modules": [
@@ -218,8 +220,10 @@ Informational. `meta` has `title`, `author` and `description`. `preferredVersion
 
 The schema identifies the form of a source; it does not check that it is safe. A consumer:
 
-- resolves a relative path against the file that declares it and checks the root on the resolved
-  path, so `..`, `%2e%2e` or `\` cannot leave it;
+- resolves a relative path against the file that declares it as a URL reference (`file://` for a
+  local file), and checks the root on the result, so `..`, `%2e%2e` or `\` cannot leave it;
+- to read a local file, decodes each segment of the result and rejects a segment that decodes to
+  `/` or `\`; a URL is fetched as it is;
 - keeps a git source inside its repository;
 - never passes a ref to git as an option;
 - does not show credentials from a URL in its output.

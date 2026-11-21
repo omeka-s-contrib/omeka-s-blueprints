@@ -31,9 +31,11 @@ Lists shared with `$import` can be validated on their own, with the schema under
 
 Every field that holds a source references a type with the `x-blueprint-reference` annotation:
 `resource` for a single file, `addon` for a module or theme source, which may also be a git
-repository. To find the source fields, walk the schema from the root `properties`, follow local
-`$ref`s together with the keywords next to them, and stop at a node that has the annotation, on
-itself or on its `$ref` target. Every future source field will use one of these types. A tool
+repository. To find the source fields, walk the schema from the root `properties`: `properties`
+adds `.name` to the path, `items` adds `[]`, and `anyOf`, `oneOf` and `allOf` keep it. Follow local
+`$ref`s together with the keywords next to them, skip a definition already on the path, and stop at
+a node that has the annotation, on itself or on its `$ref` target. Every future source field will
+use one of these annotation values. A tool
 should stop with an error on an annotation value it does not know. The three `datasource.*` forms
 (`relativePath`, `url`, `git`) identify a value by its prefix, as the WordPress Playground's
 blueprint schema does; they do not validate it. How a consumer reads each form is described in the
