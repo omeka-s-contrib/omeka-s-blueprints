@@ -19,6 +19,7 @@ const CASES = {
   "/etc/a.php": null, "\\\\server\\share\\a.php": null, "C:\\a.php": null, "C:/a.php": null,
   "file:///tmp/a.php": null, "php://input": null, "ftp://example.org/a.zip": null, "mailto:a@example.org": null,
   "deploy@gitlab.example.org:o/r.git": "relativePath", "CleanUrl:3.4": null, "git@:x": "git", "": null,
+  " https://example.org/M.zip": null, " ./a.zip": null, "\ta.zip": null, "\u00a0a.zip": null, "./a.zip ": "relativePath",
 };
 
 for (const [value, expected] of Object.entries(CASES)) {

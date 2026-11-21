@@ -78,8 +78,8 @@
         "datasource.relativePath": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!git@[^/:]*:)(?![/\\\\])",
-            "description": "Path relative to the declaring document: no scheme, not absolute. A URL reference: resolved against the declaring document, and decoded only to read a local file. It must stay inside the root. './' is recommended."
+            "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!git@[^/:]*:)(?![/\\\\\\s])",
+            "description": "Path relative to the declaring document: no scheme, not absolute, no leading whitespace. A URL reference: resolved against the declaring document, and decoded only to read a local file. It must stay inside the root. './' is recommended."
         },
         "datasource.url": {
             "type": "string",

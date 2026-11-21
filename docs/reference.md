@@ -18,7 +18,7 @@ Every top-level key of a blueprint, its fields and how consumers read them.
 - **Relative paths** resolve against the file that declares them: the blueprint or an imported
   file. They are URL references, as in HTML: write `%`, `#` and `?` percent-encoded
   (`notes%231.pdf`); other characters may be written as they are or encoded (`My File.pdf` or
-  `My%20File.pdf`). Absolute paths are rejected. Write them with `./`; paths without it are still
+  `My%20File.pdf`). Absolute paths and leading whitespace are rejected. Write them with `./`; paths without it are still
   valid, unless they start like a URL scheme (`notes:` in `./notes:1.json`).
 - **The root.** A relative path must stay inside the root: the folder of the blueprint, local or
   URL. `../` may go back up to the root, not beyond. A file imported by an absolute URL or by
