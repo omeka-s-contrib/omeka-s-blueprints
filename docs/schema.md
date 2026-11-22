@@ -47,6 +47,6 @@ blueprint schema does; they do not validate it. How a consumer reads each form i
 
     The documentation is rebuilt on every change to `main`. The files under `schema/` only come from release tags, so `schema/v0/` keeps serving the last release until a new `vX.Y.Z` tag is pushed.
 
-Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions. `v0` is already treated as a stable major: a breaking change (a field removed or renamed, or a value that a consumer accepted now rejected) bumps it to `v1`. Rejecting values that no consumer accepted is not breaking. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the schema.
+Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions. `v0` is already treated as a stable major: a breaking change bumps it to `v1`. A breaking change removes or renames a field, or rejects a value that the format described and that consumers accept. Rejecting input errors (an empty string, a URL without a host, leading whitespace), values the format never described, or values no consumer accepts, is not breaking. A consumer's own extensions are not part of the format. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the schema.
 
 See the [tags](https://github.com/omeka-s-contrib/omeka-s-blueprints/tags) for every release.

@@ -222,9 +222,11 @@ The schema identifies the form of a source; it does not check that it is safe. A
 
 - resolves a relative path against the file that declares it as a URL reference (`file://` for a
   local file), and checks the root on the result, so `..`, `%2e%2e` or `\` cannot leave it;
-- to read a local file, decodes each segment of the result and rejects a segment that decodes to
-  `/` or `\`; a URL is fetched as it is;
-- keeps a git source inside its repository;
+- rejects a segment that decodes to `/` or `\` (`%2F`, `%5C`), whether the blueprint comes from
+  disk or from a URL;
+- to read a local file, decodes each segment of the result; a URL is fetched as it is;
+- keeps a git source inside its repository: a `..` segment, also percent-encoded, in the owner,
+  group, repository, ref or path is an error;
 - never passes a ref to git as an option;
 - does not show credentials from a URL in its output.
 
