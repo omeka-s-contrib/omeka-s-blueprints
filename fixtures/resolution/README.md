@@ -16,5 +16,8 @@ and `pointer` a JSON pointer to a string in it. `resolved` is one of:
 - `{ "repository": "<host>/<path>", "ref": "<ref>" | null }`: a git repository;
 - `{ "repository": "<host>/<path>", "ref": "<ref>" | null, "path": "<path in repo>" }`: a file in a git repository;
 - `{ "error": "outside-root" }`: a relative path leaves the root;
-- `{ "error": "outside-repository" }`: a git source leaves its repository;
-- `{ "error": "encoded-separator" }`: a segment decodes to `/` or `\`.
+- `{ "error": "outside-repository" }`: a git source has a `..` segment, also percent-encoded, in its
+  owner, group, repository, ref or path, as written;
+- `{ "error": "encoded-separator" }`: a segment of a relative path decodes to `/` or `\`.
+
+A case holds only results or only errors, so a harness can stop at the first error.

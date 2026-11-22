@@ -1,10 +1,8 @@
 {
     "$schema": "../../../assets/schema/blueprint-schema.json",
     "files": [
-        { "source": "./My File.pdf", "destination": "config/e0.pdf" },
-        { "source": "./My%20File.pdf", "destination": "config/e1.pdf" },
-        { "source": "./a%2Fb.pdf", "destination": "config/e2.pdf" },
-        { "source": "./a%5Cb.pdf", "destination": "config/e3.pdf" },
-        { "source": "./c%2fd.pdf", "destination": "config/e4.pdf" }
+        { "source": "./a%2Fb.pdf", "destination": "config/e0.pdf" },
+        { "source": "./a%5Cb.pdf", "destination": "config/e1.pdf" },
+        { "source": "./c%2fd.pdf", "destination": "config/e2.pdf" }
     ]
 }

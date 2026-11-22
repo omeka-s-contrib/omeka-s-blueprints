@@ -1,7 +1,5 @@
 [
-    { "in": "blueprint.json", "pointer": "/files/0/source", "resolved": { "path": "My File.pdf" } },
-    { "in": "blueprint.json", "pointer": "/files/1/source", "resolved": { "path": "My File.pdf" } },
-    { "in": "blueprint.json", "pointer": "/files/2/source", "resolved": { "error": "encoded-separator" } },
-    { "in": "blueprint.json", "pointer": "/files/3/source", "resolved": { "error": "encoded-separator" } },
-    { "in": "blueprint.json", "pointer": "/files/4/source", "resolved": { "error": "encoded-separator" } }
+    { "in": "blueprint.json", "pointer": "/files/0/source", "resolved": { "error": "encoded-separator" } },
+    { "in": "blueprint.json", "pointer": "/files/1/source", "resolved": { "error": "encoded-separator" } },
+    { "in": "blueprint.json", "pointer": "/files/2/source", "resolved": { "error": "encoded-separator" } }
 ]

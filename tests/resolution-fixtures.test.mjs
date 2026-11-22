@@ -77,6 +77,9 @@ for (const name of cases) {
   test(`resolution/${name}: expected.json`, () => {
     const expected = readJson(join(caseDir, "expected.json"));
     assert.ok(Array.isArray(expected) && expected.length > 0);
+    // A harness may stop at the first error, so a case holds only results or only errors.
+    const errorRows = expected.filter((entry) => "error" in (entry.resolved ?? {})).length;
+    assert.ok(errorRows === 0 || errorRows === expected.length, "a case holds only results or only errors");
     for (const entry of expected) {
       assert.deepEqual(Object.keys(entry).sort(), ["in", "pointer", "resolved"]);
       const file = join(caseDir, entry.in);

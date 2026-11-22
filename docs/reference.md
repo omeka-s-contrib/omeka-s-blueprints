@@ -18,8 +18,9 @@ Every top-level key of a blueprint, its fields and how consumers read them.
 - **Relative paths** resolve against the file that declares them: the blueprint or an imported
   file. They are URL references, as in HTML: write `%`, `#` and `?` percent-encoded
   (`notes%231.pdf`); other characters may be written as they are or encoded (`My File.pdf` or
-  `My%20File.pdf`). Absolute paths and leading whitespace are rejected. Write them with `./`; paths without it are still
-  valid, unless they start like a URL scheme (`notes:` in `./notes:1.json`).
+  `My%20File.pdf`), but not `/` and `\` (`%2F`, `%5C`). Absolute paths and leading whitespace are
+  rejected. Write them with `./`; paths without it are still valid, unless they start like a URL
+  scheme (`notes:` in `./notes:1.json`).
 - **The root.** A relative path must stay inside the root: the folder of the blueprint, local or
   URL. `../` may go back up to the root, not beyond. A file imported by an absolute URL or by
   `gh:`/`gl:` has its own folder as root; a file imported by a relative path keeps the root of the
@@ -222,11 +223,12 @@ The schema identifies the form of a source; it does not check that it is safe. A
 
 - resolves a relative path against the file that declares it as a URL reference (`file://` for a
   local file), and checks the root on the result, so `..`, `%2e%2e` or `\` cannot leave it;
-- rejects a segment that decodes to `/` or `\` (`%2F`, `%5C`), whether the blueprint comes from
-  disk or from a URL;
+- rejects a segment of a relative path that decodes to `/` or `\` (`%2F`, `%5C`), whether the
+  blueprint comes from disk or from a URL;
 - to read a local file, decodes each segment of the result; a URL is fetched as it is;
 - keeps a git source inside its repository: a `..` segment, also percent-encoded, in the owner,
-  group, repository, ref or path is an error;
+  group, repository, ref or path is an error, checked on the source as written, before any URL
+  normalization;
 - never passes a ref to git as an option;
 - does not show credentials from a URL in its output.
 
