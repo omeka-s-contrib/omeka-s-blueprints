@@ -9,5 +9,12 @@ its own folder as root; a file imported by a relative path keeps its importer's 
 resolve against the file that contains them.
 
 `expected.json` is an array of `{ "in", "pointer", "resolved" }`: `in` is a file relative to the case,
-`pointer` a JSON pointer to a string in it, and `resolved` one of `{ "path" }` (relative to the case),
-`{ "url" }`, `{ "repository": "<host>/<path>", "ref": "<ref>" | null }`, or `{ "error": "outside-root" }`.
+and `pointer` a JSON pointer to a string in it. `resolved` is one of:
+
+- `{ "path" }`: a file relative to the case, decoded (`./My%20File.pdf` gives `My File.pdf`);
+- `{ "url" }`: a download;
+- `{ "repository": "<host>/<path>", "ref": "<ref>" | null }`: a git repository;
+- `{ "repository": "<host>/<path>", "ref": "<ref>" | null, "path": "<path in repo>" }`: a file in a git repository;
+- `{ "error": "outside-root" }`: a relative path leaves the root;
+- `{ "error": "outside-repository" }`: a git source leaves its repository;
+- `{ "error": "encoded-separator" }`: a segment decodes to `/` or `\`.

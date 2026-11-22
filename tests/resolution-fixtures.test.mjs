@@ -10,6 +10,7 @@ import { validatorFor, errorsText } from "./ajv.mjs";
 const root = fileURLToPath(new URL("..", import.meta.url));
 const resolutionDir = join(root, "fixtures/resolution");
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
+const ERRORS = ["outside-root", "outside-repository", "encoded-separator"];
 
 const cases = existsSync(resolutionDir)
   ? readdirSync(resolutionDir).filter((d) => statSync(join(resolutionDir, d)).isDirectory())
@@ -85,10 +86,11 @@ for (const name of cases) {
       const keys = Object.keys(r).sort().join();
       if (keys === "path") assert.ok(typeof r.path === "string" && !r.path.startsWith("./") && !r.path.startsWith("/"));
       else if (keys === "url") assert.match(r.url, /^https?:\/\//);
-      else if (keys === "ref,repository") {
+      else if (keys === "ref,repository" || keys === "path,ref,repository") {
         assert.match(r.repository, /^[^/\s]+(?:\/[^/\s]+){2,}$/);
         assert.ok(r.ref === null || typeof r.ref === "string");
-      } else if (keys === "error") assert.equal(r.error, "outside-root");
+        if ("path" in r) assert.ok(typeof r.path === "string" && r.path !== "" && !r.path.startsWith("./") && !r.path.startsWith("/"));
+      } else if (keys === "error") assert.ok(ERRORS.includes(r.error), `unknown error ${r.error}`);
       else assert.fail(`unknown resolved form ${keys}`);
     }
   });
