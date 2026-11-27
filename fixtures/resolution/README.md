@@ -20,4 +20,5 @@ and `pointer` a JSON pointer to a string in it. `resolved` is one of:
   owner, group, repository, ref or path, as written;
 - `{ "error": "encoded-separator" }`: a segment of a relative path decodes to `/` or `\`.
 
-A case holds only results or only errors, so a harness can stop at the first error.
+A case holds only results or only errors, so a harness can stop at the first error. A consumer that
+does not support a form (a GitLab or `git@` repository, for example) skips the entries that use it.
