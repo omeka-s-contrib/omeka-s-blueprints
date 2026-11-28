@@ -7,5 +7,6 @@
     { "in": "blueprint.json", "pointer": "/files/5/source", "resolved": { "error": "outside-repository" } },
     { "in": "blueprint.json", "pointer": "/modules/0/source", "resolved": { "error": "outside-repository" } },
     { "in": "blueprint.json", "pointer": "/modules/1/source", "resolved": { "error": "outside-repository" } },
-    { "in": "blueprint.json", "pointer": "/modules/2/source", "resolved": { "error": "outside-repository" } }
+    { "in": "blueprint.json", "pointer": "/modules/2/source", "resolved": { "error": "outside-repository" } },
+    { "in": "blueprint.json", "pointer": "/modules/3/source", "resolved": { "error": "outside-repository" } }
 ]

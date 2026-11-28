@@ -3,7 +3,8 @@
     "modules": [
         { "name": "A", "source": "gh:o/.." },
         { "name": "B", "source": "https://github.com/o/%2e%2e/other/r.git" },
-        { "name": "C", "source": "https://github.com/o/.." }
+        { "name": "C", "source": "https://github.com/o/.." },
+        { "name": "D", "source": "http://git.example.org/trusted/%2e%2e/attacker/D.git" }
     ],
     "files": [
         { "source": "gh:trusted/..@attacker:evil/main/evil.php", "destination": "config/f0.php" },

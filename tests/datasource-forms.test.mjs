@@ -19,6 +19,10 @@ const CASES = {
   "/etc/a.php": null, "\\\\server\\share\\a.php": null, "C:\\a.php": null, "C:/a.php": null,
   "file:///tmp/a.php": null, "php://input": null, "ftp://example.org/a.zip": null, "mailto:a@example.org": null,
   "deploy@gitlab.example.org:o/r.git": "relativePath", "CleanUrl:3.4": null, "git@:x": "git", "": null,
+  "./100%.pdf": null, "./a%zz.pdf": null, "./a%2.pdf": null, "./a\u0001.pdf": null, "./a\u007f.pdf": null,
+  "./Report #3.json": null, "./a?b.json": null, "#": null, "#x": null, "?a": null,
+  "./a%00.pdf": null, "./a%0A.pdf": null, "./a%1f.pdf": null, "./a%7F.pdf": null, "./a\u0085.pdf": null,
+  "./Report%20%233.json": "relativePath", "./a%20b%E2%82%AC.pdf": "relativePath", "./100%25.pdf": "relativePath",
   " https://example.org/M.zip": null, " ./a.zip": null, "\ta.zip": null, "\u00a0a.zip": null, "./a.zip ": "relativePath",
 };
 
