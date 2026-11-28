@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createAjv } from "./ajv.mjs";
+import { createAjv, main } from "./ajv.mjs";
 
 test("the annotation is a known keyword", () => {
   assert.doesNotThrow(() => createAjv().compile({ type: "string", "x-blueprint-reference": "resource" }));
@@ -16,16 +16,19 @@ test("an unknown keyword fails", () => {
 });
 
 // Strict mode skips unknown keywords next to a $ref, where both annotations sit,
-// so a misspelt annotation key would compile silently.
-test("no misspelt annotation key anywhere in the schema", async () => {
-  const { main } = await import("./ajv.mjs");
-  const keys = [];
+// so a misspelt annotation key there would compile silently.
+const METADATA = new Set(["$comment", "title", "description", "default", "deprecated", "examples"]);
+test("every key next to a $ref is a known keyword", () => {
+  const ajv = createAjv();
+  const unknown = [];
   (function walk(node) {
     if (!node || typeof node !== "object") return;
-    for (const [key, value] of Object.entries(node)) {
-      if (/^x-blueprint/i.test(key) && key !== "x-blueprint-reference") keys.push(key);
-      walk(value);
+    if (typeof node.$ref === "string") {
+      for (const key of Object.keys(node)) {
+        if (!METADATA.has(key) && !ajv.getKeyword(key)) unknown.push(key);
+      }
     }
+    for (const value of Object.values(node)) walk(value);
   })(main);
-  assert.deepEqual(keys, []);
+  assert.deepEqual(unknown, []);
 });
