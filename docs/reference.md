@@ -222,15 +222,17 @@ Informational. `meta` has `title`, `author` and `description`. `preferredVersion
 The schema identifies the form of a source; it does not check that it is safe. A consumer:
 
 - resolves a relative path against the file that declares it as a URL reference (`file://` for a
-  local file), and checks the root on the result, so `..`, `%2e%2e` or `\` cannot leave it;
+  local file), and checks the root after decoding each segment, with `\` read as `/`, so `..`,
+  `%2e%2e` or `..\` cannot leave it (an RFC 3986 resolver keeps `%2e%2e` as a plain segment);
 - rejects a segment of a relative path that decodes to `/` or `\` (`%2F`, `%5C`), whether the
   blueprint comes from disk or from a URL;
 - to read a local file, decodes each segment of the result; a URL is fetched as it is;
 - may reject an unencoded `?` or `#` in a relative path to a local file: as a URL reference it
   starts a query or a fragment, so `./notes#1.pdf` names `notes`;
-- keeps a git source inside its repository: a `..` segment, also percent-encoded, in the owner,
-  group, repository, ref or path is an error, checked on the source as written, before any URL
-  normalization;
+- keeps a repository source (a git source or an `https://` repository URL) inside its repository:
+  a `..` segment, also percent-encoded, in the owner, group, repository, ref or path is an error,
+  checked on the source as written, before any URL normalization; a `/blob/` URL turned into a raw
+  URL stays inside its repository too;
 - never passes a ref to git as an option;
 - does not show credentials from a URL in its output.
 
