@@ -14,3 +14,18 @@ test("an unknown annotation value fails", () => {
 test("an unknown keyword fails", () => {
   assert.throws(() => createAjv().compile({ type: "string", "x-blueprint-refrence": "resource" }), /unknown keyword/);
 });
+
+// Strict mode skips unknown keywords next to a $ref, where both annotations sit,
+// so a misspelt annotation key would compile silently.
+test("no misspelt annotation key anywhere in the schema", async () => {
+  const { main } = await import("./ajv.mjs");
+  const keys = [];
+  (function walk(node) {
+    if (!node || typeof node !== "object") return;
+    for (const [key, value] of Object.entries(node)) {
+      if (/^x-blueprint/i.test(key) && key !== "x-blueprint-reference") keys.push(key);
+      walk(value);
+    }
+  })(main);
+  assert.deepEqual(keys, []);
+});

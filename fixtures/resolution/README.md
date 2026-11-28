@@ -16,7 +16,7 @@ and `pointer` a JSON pointer to a string in it. `resolved` is one of:
 - `{ "repository": "<host>/<path>", "ref": "<ref>" | null }`: a git repository;
 - `{ "repository": "<host>/<path>", "ref": "<ref>" | null, "path": "<path in repo>" }`: a file in a git repository;
 - `{ "error": "outside-root" }`: a relative path leaves the root;
-- `{ "error": "outside-repository" }`: a repository source (a git source or an `https://` repository
+- `{ "error": "outside-repository" }`: a repository source (a git source or an `http(s)://` repository
   URL) has a `..` segment, also percent-encoded, in its owner, group, repository, ref or path, as
   written;
 - `{ "error": "encoded-separator" }`: a segment of a relative path decodes to `/` or `\`.

@@ -17,7 +17,8 @@ Every top-level key of a blueprint, its fields and how consumers read them.
   when a consumer resolves it.
 - **Relative paths** resolve against the file that declares them: the blueprint or an imported
   file. They are URL references, as in HTML: write `%`, `#` and `?` percent-encoded
-  (`notes%231.pdf`); other characters may be written as they are or encoded (`My File.pdf` or
+  (`notes%231.pdf`); the schema rejects an unencoded `#` or `?`, a malformed escape (`100%.pdf`)
+  and control characters; other characters may be written as they are or encoded (`My File.pdf` or
   `My%20File.pdf`), but not `/` and `\` (`%2F`, `%5C`). Absolute paths and leading whitespace are
   rejected. Write them with `./`; paths without it are still valid, unless they start like a URL
   scheme (`notes:` in `./notes:1.json`).
@@ -227,9 +228,11 @@ The schema identifies the form of a source; it does not check that it is safe. A
 - rejects a segment of a relative path that decodes to `/` or `\` (`%2F`, `%5C`), whether the
   blueprint comes from disk or from a URL;
 - to read a local file, decodes each segment of the result; a URL is fetched as it is;
-- may reject an unencoded `?` or `#` in a relative path to a local file: as a URL reference it
-  starts a query or a fragment, so `./notes#1.pdf` names `notes`;
-- keeps a repository source (a git source or an `https://` repository URL) inside its repository:
+- checks the root on the real path of a local file, so a symbolic link inside the root (a cloned
+  repository can hold `data -> /`) cannot leave it;
+- stops with an error on an `$import` cycle: a file that imports itself, directly or through other
+  files;
+- keeps a repository source (a git source or an `http(s)://` repository URL) inside its repository:
   a `..` segment, also percent-encoded, in the owner, group, repository, ref or path is an error,
   checked on the source as written, before any URL normalization; a `/blob/` URL turned into a raw
   URL stays inside its repository too;
