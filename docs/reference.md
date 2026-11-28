@@ -41,6 +41,7 @@ Values used when Omeka S is installed. Consumers that work on an existing instal
 
 | Field | Type | Description |
 |---|---|---|
+| `source` | string | Omeka S release ZIP: a URL, a path relative to the blueprint or a file in a repository (see [*Sources*](#common-rules)). It must be the built release asset (`releases/download/vX.Y.Z/omeka-s-X.Y.Z.zip`): a git repository or a GitHub source archive needs a build first, and consumers reject a repository. It wins over `preferredVersions.omeka`; consumers may warn when they differ. Consumers that cannot install from an archive ignore it. |
 | `title` | string | Installation title |
 | `locale` | string | For example `en_US` |
 | `timezone` | string | For example `UTC` |
@@ -215,7 +216,7 @@ A record that already exists is not an error: the identity rules above leave it 
 
 ## `meta` and `preferredVersions`
 
-Informational. `meta` has `title`, `author` and `description`. `preferredVersions` has the `php` and `omeka` versions the blueprint was written for.
+`meta` is informational: `title`, `author` and `description`. `preferredVersions` has the `php` and `omeka` versions the blueprint was written for. `preferredVersions.omeka` is the Omeka S release consumers install when they install Omeka S and `install.source` is absent or not supported; consumers that cannot choose the version treat it as a hint.
 
 ## Consumers
 

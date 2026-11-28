@@ -47,6 +47,7 @@ export function findSourceFields(schema) {
 test("the walk finds every source field", () => {
   assert.deepEqual(findSourceFields(main), [
     "files[].$import=resource", "files[].source=resource",
+    "install.source=resource",
     "itemSets[].$import=resource", "itemSets[].source=resource",
     "items[].$import=resource", "items[].media[].url=resource", "items[].source=resource",
     "modules[].$import=resource", "modules[].source=addon",

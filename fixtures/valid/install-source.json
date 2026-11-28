@@ -1,0 +1,8 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "preferredVersions": { "omeka": "4.1.1" },
+    "install": {
+        "source": "./core/omeka-s-4.1.1.zip",
+        "title": "Demo"
+    }
+}
