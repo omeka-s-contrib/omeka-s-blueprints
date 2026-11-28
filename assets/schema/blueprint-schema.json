@@ -19,7 +19,7 @@
         },
         "preferredVersions": {
             "type": "object",
-            "description": "Runtime targets. preferredVersions.omeka is the release consumers install when install.source is absent; consumers that cannot choose the version treat it as a hint.",
+            "description": "The PHP and Omeka S versions the blueprint was written for. When consumers install Omeka S and install.source is absent or not supported, omeka is the release they install; consumers that cannot choose the version treat it as a hint.",
             "additionalProperties": false,
             "properties": {
                 "php": { "type": "string" },
@@ -33,7 +33,7 @@
             "properties": {
                 "source": {
                     "$ref": "#/$defs/datasource.file",
-                    "description": "Omeka S release ZIP, as a URL or a relative path. Not a git repository. Without it, consumers install the release named by preferredVersions.omeka, or the latest one."
+                    "description": "Omeka S release ZIP, the built release asset (not a GitHub source archive): a URL, a relative path or a file in a repository. Consumers reject a git repository. Without it, consumers install the release named by preferredVersions.omeka, or their default release."
                 },
                 "title": { "type": "string" },
                 "locale": { "type": "string" },

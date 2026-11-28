@@ -35,7 +35,7 @@ Every key is optional. Unknown keys are rejected, except extensions that start w
 
 | Key | What it holds |
 |---|---|
-| [`install`](reference.md#install) | Title, locale, timezone and first admin, used when Omeka S is installed |
+| [`install`](reference.md#install) | Release archive, title, locale, timezone and first admin, used when Omeka S is installed |
 | [`modules`](reference.md#modules) | Modules to download, install or activate |
 | [`themes`](reference.md#themes) | Themes to make available |
 | [`files`](reference.md#files) | Extra files placed in the installation, such as a module config |
@@ -45,7 +45,7 @@ Every key is optional. Unknown keys are rejected, except extensions that start w
 | [`users`](reference.md#users) | Accounts and their roles |
 | [`itemSets`, `items`](reference.md#itemsets-and-items) | Sample content, with media by URL, written in the blueprint or imported from portable JSON-LD files |
 | [`sites`](reference.md#sites) | Sites, their theme and per-user permissions |
-| [`meta`, `preferredVersions`](reference.md#meta-and-preferredversions) | Informational: title, author, PHP and Omeka S versions |
+| [`meta`, `preferredVersions`](reference.md#meta-and-preferredversions) | Title, author, and the PHP and Omeka S versions; `preferredVersions.omeka` is the release to install when there is no `install.source` |
 | [`x-…`](reference.md#extensions) | Options for one consumer; the others ignore them |
 
 ## Validate in your editor
