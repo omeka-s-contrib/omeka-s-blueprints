@@ -71,8 +71,51 @@
             "additionalProperties": false,
             "required": ["$import"],
             "properties": {
-                "$import": { "type": "string", "minLength": 1 }
+                "$import": { "$ref": "#/$defs/datasource.file" }
             }
+        },
+
+        "datasource.relativePath": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?![A-Za-z][A-Za-z0-9+.-]*:)(?!git@[^/:]*:)(?![/\\\\\\s])",
+            "description": "Path relative to the declaring document: no scheme, not absolute, no leading whitespace. A URL reference: resolved against the declaring document, and decoded only to read a local file. It must stay inside the root. './' is recommended."
+        },
+        "datasource.url": {
+            "type": "string",
+            "pattern": "^[Hh][Tt][Tt][Pp][Ss]?://[^/?#]+",
+            "description": "An http(s) URL. A URL whose path ends in .git, or https://github.com/OWNER/REPO (with or without a trailing /), is a git repository; any other URL is a file."
+        },
+        "datasource.git": {
+            "type": "string",
+            "pattern": "^(?:gh:|gl:|git@[^/:]*:)",
+            "description": "A git source: gh:owner/repo[#ref], gh:owner/repo[@ref]:path, gl:group/repo[@ref]:path or git@host:path.git[#ref]."
+        },
+        "datasource.source": {
+            "description": "A source: relative path, URL or git source. The schema identifies the form; the consumer resolves it.",
+            "anyOf": [
+                { "$ref": "#/$defs/datasource.relativePath" },
+                { "$ref": "#/$defs/datasource.url" },
+                { "$ref": "#/$defs/datasource.git" }
+            ]
+        },
+        "datasource.file": {
+            "x-blueprint-reference": "resource",
+            "$ref": "#/$defs/datasource.source",
+            "description": "A single file, resolved against the declaring document."
+        },
+
+        "omeka.addonSource": {
+            "x-blueprint-reference": "addon",
+            "description": "Module or theme: ZIP or git repository. A ZIP or a #ref wins over version. Without it, the installed add-on is used, else a catalog lookup by name.",
+            "$ref": "#/$defs/datasource.source"
+        },
+        "addonSource": { "$ref": "#/$defs/omeka.addonSource", "deprecated": true, "description": "Deprecated alias of omeka.addonSource, kept for external references to v0.1.0." },
+
+        "instancePath": {
+            "type": "string",
+            "description": "Path relative to the Omeka S installation root. Absolute paths and '..' segments are not allowed.",
+            "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$)).+$"
         },
 
         "moduleId": {
@@ -80,14 +123,9 @@
             "description": "Omeka S module identifier (equal to the module's directory name).",
             "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
         },
-        "addonSource": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Where to get the add-on: a ZIP release URL (https://…/Module-1.2.3.zip), a git repository URL, or a scheme-prefixed reference (gh:owner/repo). Consumers reject forms they do not support. Without a source, the add-on already present in the installation is used; otherwise 'name' is resolved through the omeka.org add-on API."
-        },
         "addonVersion": {
             "type": "string",
-            "description": "Release to use when resolving through omeka.org, or tag/branch for a git source. A source that pins a release (a ZIP URL) wins; consumers may warn when they differ."
+            "description": "Release to use when resolving through omeka.org, or tag/branch for a git repository. A source that pins a release or ref (a ZIP, or a #ref) wins; consumers may warn when they differ."
         },
         "module": {
             "type": "object",
@@ -101,7 +139,7 @@
                     "enum": ["download", "install", "activate"]
                 },
                 "version": { "$ref": "#/$defs/addonVersion" },
-                "source": { "$ref": "#/$defs/addonSource" }
+                "source": { "$ref": "#/$defs/omeka.addonSource" }
             }
         },
         "moduleList": {
@@ -127,7 +165,7 @@
             "properties": {
                 "name": { "$ref": "#/$defs/themeId" },
                 "version": { "$ref": "#/$defs/addonVersion" },
-                "source": { "$ref": "#/$defs/addonSource" }
+                "source": { "$ref": "#/$defs/omeka.addonSource" }
             }
         },
         "themeList": {
@@ -148,14 +186,12 @@
             "required": ["source", "destination"],
             "properties": {
                 "source": {
-                    "type": "string",
-                    "format": "uri-reference",
-                    "description": "Path or URL of the file. Relative paths resolve against the blueprint file."
+                    "$ref": "#/$defs/datasource.file",
+                    "description": "Path or URL of the file. Relative paths resolve against the file that declares them."
                 },
                 "destination": {
-                    "type": "string",
-                    "description": "Path relative to the Omeka S root. Absolute paths and '..' segments are not allowed. With extract, the directory to extract into.",
-                    "pattern": "^(?![/\\\\])(?![A-Za-z]:)(?!(?:.*[/\\\\])?\\.\\.(?:[/\\\\]|$)).+$"
+                    "$ref": "#/$defs/instancePath",
+                    "description": "Path relative to the Omeka S root. Absolute paths and '..' segments are not allowed. With extract, the directory to extract into."
                 },
                 "extract": {
                     "type": "boolean",
@@ -181,9 +217,8 @@
             "required": ["source", "namespaceUri", "prefix", "label"],
             "properties": {
                 "source": {
-                    "type": "string",
-                    "format": "uri-reference",
-                    "description": "Path or URL of the RDF file. Relative paths resolve against the blueprint file."
+                    "$ref": "#/$defs/datasource.file",
+                    "description": "Path or URL of the RDF file. Relative paths resolve against the file that declares them."
                 },
                 "namespaceUri": { "type": "string" },
                 "prefix": { "type": "string" },
@@ -211,7 +246,7 @@
             "required": ["source"],
             "properties": {
                 "source": {
-                    "type": "string",
+                    "$ref": "#/$defs/datasource.file",
                     "description": "Path or URL to a resource-template JSON export."
                 },
                 "label": { "type": "string" },
@@ -317,18 +352,15 @@
             "default": "fail",
             "description": "What a consumer does when this entry cannot be applied: fail stops the deploy, skip leaves the entry out and reports a warning."
         },
-        "contentSource": {
-            "type": "string",
-            "minLength": 1,
-            "format": "uri-reference",
-            "description": "Path or URL to a portable JSON-LD file: one resource, with an inline @context, that names the records it refers to with o-ref terms (https://omeka-s-contrib.github.io/omeka-s-ref/ns) instead of instance ids. A relative path resolves against the file that declares the entry."
-        },
         "itemSetSource": {
             "type": "object",
             "additionalProperties": false,
             "required": ["source"],
             "properties": {
-                "source": { "$ref": "#/$defs/contentSource" },
+                "source": {
+                    "$ref": "#/$defs/datasource.file",
+                    "description": "Path or URL to a portable JSON-LD file: one resource, with an inline @context, that names the records it refers to with o-ref terms (https://omeka-s-contrib.github.io/omeka-s-ref/ns) instead of instance ids. A relative path resolves against the file that declares the entry."
+                },
                 "title": { "type": "string", "description": "The title in the file. Only used in messages, and so that items can name this item set by title." },
                 "onError": { "$ref": "#/$defs/onError" }
             }
@@ -338,7 +370,10 @@
             "additionalProperties": false,
             "required": ["source"],
             "properties": {
-                "source": { "$ref": "#/$defs/contentSource" },
+                "source": {
+                    "$ref": "#/$defs/datasource.file",
+                    "description": "Path or URL to a portable JSON-LD file: one resource, with an inline @context, that names the records it refers to with o-ref terms (https://omeka-s-contrib.github.io/omeka-s-ref/ns) instead of instance ids. A relative path resolves against the file that declares the entry."
+                },
                 "title": { "type": "string", "description": "The title in the file. Only used in messages." },
                 "sites": {
                     "type": "array",
@@ -356,7 +391,7 @@
             "required": ["url"],
             "properties": {
                 "type": { "type": "string", "enum": ["url"] },
-                "url": { "type": "string", "format": "uri-reference" },
+                "url": { "$ref": "#/$defs/datasource.file" },
                 "title": { "type": "string" },
                 "altText": { "type": "string" }
             }

@@ -5,9 +5,27 @@ Every top-level key of a blueprint, its fields and how consumers read them.
 ## Common rules
 
 - **Strict keys.** Unknown keys are rejected. Only top-level keys that start with `x-` are free-form.
-- **`$import`.** Any list entry can be `{ "$import": "path-or-url" }`. The file it points to holds more entries of the same list (or a single entry), spliced in place. How relative `$import` paths resolve is still being specified ([#10](https://github.com/omeka-s-contrib/omeka-s-blueprints/issues/10)).
+- **`$import`.** Any list entry can be `{ "$import": "path-or-url" }`. The file it points to holds more entries of the same list (or a single entry), spliced in place.
 - **Last one wins.** When two entries describe the same thing, the later one applies and consumers should warn.
-- **Relative paths** in `files` and `vocabularies` resolve against the blueprint file.
+- **Sources.** A `source`, an `$import` and a media `url` are a relative path, an `http(s)://` URL
+  or a git source (`gh:`, `gl:` or `git@host:`). A git repository is `gh:owner/repo[#ref]`,
+  `git@host:path.git[#ref]`, an `http(s)://` URL whose path ends in `.git`, or
+  `https://github.com/owner/repo` (a trailing `/` is allowed). `gh:owner/repo[@ref]:path` and
+  `gl:group/repo[@ref]:path` are a file in a repository. Any other URL is a file; consumers may turn
+  GitHub and GitLab `/blob/` page URLs into raw URLs. Modules and themes may use a repository;
+  other fields need a single file. The schema only tells the forms apart; a value can still fail
+  when a consumer resolves it.
+- **Relative paths** resolve against the file that declares them: the blueprint or an imported
+  file. They are URL references, as in HTML: write `%`, `#` and `?` percent-encoded
+  (`notes%231.pdf`); other characters may be written as they are or encoded (`My File.pdf` or
+  `My%20File.pdf`), but not `/` and `\` (`%2F`, `%5C`). Absolute paths and leading whitespace are
+  rejected. Write them with `./`; paths without it are still valid, unless they start like a URL
+  scheme (`notes:` in `./notes:1.json`).
+- **The root.** A relative path must stay inside the root: the folder of the blueprint, local or
+  URL. `../` may go back up to the root, not beyond. A file imported by an absolute URL or by
+  `gh:`/`gl:` has its own folder as root; a file imported by a relative path keeps the root of the
+  file that imports it. A blueprint without a location has no root; whether it can use relative
+  paths is up to the consumer. A consumer may allow a wider root, for example with `--root`.
 - **Optional parts.** A consumer may ignore keys it does not support, and documents which ones in its support matrix.
 
 ```json
@@ -36,8 +54,8 @@ Each entry is a module name, an object or an `$import`.
 |---|---|---|
 | `name` | string, required | Module directory name, such as `CleanUrl` |
 | `state` | `download`, `install` or `activate` | `download` places the files, `install` installs, `activate` installs and enables |
-| `version` | string | Release on omeka.org, or tag or branch of a git source. A ZIP `source` wins over it. |
-| `source` | string | ZIP URL, git URL or `gh:owner/repo`. Without it, the module already installed is used, or `name` is looked up on omeka.org. |
+| `version` | string | Release on omeka.org, or tag or branch of a git repository. A ZIP or a `#ref` in `source` wins over it. |
+| `source` | string | ZIP or git repository (see [*Sources*](#common-rules)). Without it, the module already installed is used, or `name` is looked up on omeka.org. |
 
 ```json
 "modules": [
@@ -62,7 +80,7 @@ Files copied into the installation after modules and themes are in place.
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL of the file |
+| `source` | string, required | Path or URL of the file (see [*Sources*](#common-rules)) |
 | `destination` | string, required | Path inside the Omeka S root. Absolute paths and `..` are not allowed. |
 | `extract` | boolean, default `false` | Unzip `source` into `destination`. A single top-level directory in the archive is skipped, as with add-ons. |
 
@@ -78,7 +96,7 @@ RDF vocabularies imported with the RDF importer.
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL of the RDF file |
+| `source` | string, required | Path or URL of the RDF file (see [*Sources*](#common-rules)) |
 | `namespaceUri`, `prefix`, `label` | string, required | How the vocabulary appears in Omeka S |
 | `comment`, `format`, `lang` | string | Passed to the importer |
 | `labelProperty`, `commentProperty` | string | RDF properties to read labels and comments from |
@@ -95,7 +113,7 @@ Resource templates imported from a JSON export.
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL of the export |
+| `source` | string, required | Path or URL of the export (see [*Sources*](#common-rules)) |
 | `label` | string | Label to use instead of the one in the export |
 | `ignoreDeps` | boolean | Skip the dependency check when importing |
 
@@ -146,7 +164,7 @@ An entry of `itemSets` or `items` can instead point to a portable JSON-LD file w
 
 | Field | Type | Description |
 |---|---|---|
-| `source` | string, required | Path or URL to the JSON-LD file. A relative path resolves against the file that declares the entry. |
+| `source` | string, required | Path or URL to the JSON-LD file (see [*Sources*](#common-rules)). |
 | `title` | string | The title in the file. Only used in messages, and so that a simple item can name a source item set in `itemSets`. |
 | `sites` | list of strings | Items only. Slugs or titles that replace the file's `o:site`. |
 | `media` | list | Items only. As in a simple item. |
@@ -198,6 +216,27 @@ A record that already exists is not an error: the identity rules above leave it 
 ## `meta` and `preferredVersions`
 
 Informational. `meta` has `title`, `author` and `description`. `preferredVersions` has the `php` and `omeka` versions the blueprint was written for.
+
+## Consumers
+
+The schema identifies the form of a source; it does not check that it is safe. A consumer:
+
+- resolves a relative path against the file that declares it as a URL reference (`file://` for a
+  local file), and checks the root after decoding each segment, with `\` read as `/`, so `..`,
+  `%2e%2e` or `..\` cannot leave it (an RFC 3986 resolver keeps `%2e%2e` as a plain segment);
+- rejects a segment of a relative path that decodes to `/` or `\` (`%2F`, `%5C`), whether the
+  blueprint comes from disk or from a URL;
+- to read a local file, decodes each segment of the result; a URL is fetched as it is;
+- may reject an unencoded `?` or `#` in a relative path to a local file: as a URL reference it
+  starts a query or a fragment, so `./notes#1.pdf` names `notes`;
+- keeps a repository source (a git source or an `https://` repository URL) inside its repository:
+  a `..` segment, also percent-encoded, in the owner, group, repository, ref or path is an error,
+  checked on the source as written, before any URL normalization; a `/blob/` URL turned into a raw
+  URL stays inside its repository too;
+- never passes a ref to git as an option;
+- does not show credentials from a URL in its output.
+
+`fixtures/resolution/` has the expected results to test a resolver against.
 
 ## Extensions
 

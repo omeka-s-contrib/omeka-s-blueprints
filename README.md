@@ -50,8 +50,9 @@ Documentation, examples and the schema: <https://omeka-s-contrib.github.io/omeka
 - `assets/schema/blueprint-schema.json`: the blueprint JSON Schema (2020-12).
 - `assets/schema/partials/`: standalone schemas for lists that can be shared with `$import` (modules, themes, files, …).
 - `fixtures/valid/`, `fixtures/invalid/`: conformance fixtures. Files under `fixtures/*/partials/<name>/` are validated against `partials/<name>.schema.json`.
+- `fixtures/resolution/`: how sources resolve, for consumers to test their resolvers against.
 - `docs/`: the documentation site ([Zensical](https://zensical.org), configured in `mkdocs.yml`). `docs/examples/` holds the examples shown on it.
-- `tests/`: validates every fixture and example against the schema.
+- `tests/`: validates every fixture and example against the schema, and checks the form of the resolution fixtures.
 
 ## Versioning
 
@@ -62,7 +63,7 @@ The schema is published on GitHub Pages for every tag:
 
 Partials live next to it, under `partials/`. Do not point to `main`, it can carry unreleased breaking changes.
 
-Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions: `v0` is already treated as a stable major, so a breaking change (a field removed, renamed or made stricter) bumps it to `v1`. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the site. Pushes to `main` update the documentation only; the files under `schema/` always come from the tags.
+Releases use [semver](https://semver.org) numbers, with floating major tags as in GitHub Actions: `v0` is already treated as a stable major, so a breaking change bumps it to `v1`. A breaking change removes or renames a field, or rejects a value that the format described and that consumers accept. Rejecting input errors (an empty string, a URL without a host, leading whitespace), values the format never described, or values no consumer accepts, is not breaking. A consumer's own extensions are not part of the format. Pushing a `vX.Y.Z` tag moves the floating `vX` tag to it and republishes the site. Pushes to `main` update the documentation only; the files under `schema/` always come from the tags.
 
 ## Development
 

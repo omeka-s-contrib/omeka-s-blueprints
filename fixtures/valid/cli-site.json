@@ -20,7 +20,7 @@
         }
     ],
     "resourceTemplates": [
-        { "source": "../resource-template/base_resource.json" }
+        { "source": "./resource-template/base_resource.json" }
     ],
     "settings": {
         "installation_title": "Blueprint Demo"
