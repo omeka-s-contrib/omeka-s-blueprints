@@ -19,7 +19,7 @@
         },
         "preferredVersions": {
             "type": "object",
-            "description": "Informational runtime targets.",
+            "description": "Runtime targets. preferredVersions.omeka is the release consumers install when install.source is absent; consumers that cannot choose the version treat it as a hint.",
             "additionalProperties": false,
             "properties": {
                 "php": { "type": "string" },
@@ -31,6 +31,10 @@
             "description": "Values used when installing Omeka S. Consumers that work on an existing installation ignore them.",
             "additionalProperties": false,
             "properties": {
+                "source": {
+                    "$ref": "#/$defs/datasource.file",
+                    "description": "Omeka S release ZIP, as a URL or a relative path. Not a git repository. Without it, consumers install the release named by preferredVersions.omeka, or the latest one."
+                },
                 "title": { "type": "string" },
                 "locale": { "type": "string" },
                 "timezone": { "type": "string" },

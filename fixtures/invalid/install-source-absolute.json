@@ -1,0 +1,4 @@
+{
+    "$schema": "../../assets/schema/blueprint-schema.json",
+    "install": { "source": "/opt/omeka-s-4.1.1.zip" }
+}
